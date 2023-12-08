@@ -18,8 +18,6 @@ package de.fhws.fiw.fds.sutton.server.api.hyperlinks;
 
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.SuttonUriInfo;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.UriBuilder;
-import jakarta.ws.rs.core.UriInfo;
 
 import java.net.URI;
 
@@ -33,7 +31,7 @@ public class Hyperlinks {
      * Creates hyperlinks as specified in the specifications of the REST architecture and adds them to the response as
      * headers
      *
-     * @param uriInfo         the {@link UriInfo} to derive the required path information from
+     * @param uriInfo         the {@link SuttonUriInfo} to derive the required path information from
      * @param responseBuilder the {@link Response.ResponseBuilder} to add the created hyperlink to as a header
      * @param mediaType       {@link String} the media type in which the data will be sent when this link is requested
      * @param relationType    {@link String} describes what the hyperlink stands for

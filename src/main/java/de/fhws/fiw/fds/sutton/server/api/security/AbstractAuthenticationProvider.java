@@ -1,7 +1,7 @@
 package de.fhws.fiw.fds.sutton.server.api.security;
 
 
-import jakarta.servlet.http.HttpServletRequest;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.ServletRequestAdapter.SuttonServletRequest;
 import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.NotAuthorizedException;
 
@@ -20,7 +20,7 @@ public abstract class AbstractAuthenticationProvider {
      * the basic authorization, and then it searches the database for the given user using the read information  from
      * the request
      *
-     * @param request the {@link HttpServletRequest} the HTTP request to extract the username and password from
+     * @param request the {@link SuttonServletRequest} the HTTP request to extract the username and password from
      * @param roles   a list of roles {@link String} that are allowed to perform the HTTP request. The method will check
      *                if the user owns one of this roles
      * @return the {@link User} from the database
@@ -28,7 +28,7 @@ public abstract class AbstractAuthenticationProvider {
      *                                username or password are not correct
      * @throws ForbiddenException     if the user exists but is not allowed to perform the HTTP request
      */
-    public final User accessControl(final HttpServletRequest request, final String... roles) {
+    public final User accessControl(final SuttonServletRequest request, final String... roles) {
         final User requestingUser = BasicAuthHelper.readUserFromHttpHeader(request);
         return authorizeUser(requestingUser, roles);
     }

@@ -1,6 +1,6 @@
 package de.fhws.fiw.fds.sutton.server.api.security;
 
-import jakarta.servlet.http.HttpServletRequest;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.ServletRequestAdapter.SuttonServletRequest;
 import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.core.HttpHeaders;
 import org.apache.commons.codec.binary.Base64;
@@ -19,11 +19,11 @@ public class BasicAuthHelper {
      * extracts the username and the password that were sent within an HTTP request in the context of basic
      * authorization
      *
-     * @param request {@link HttpServletRequest} the HTTP request to extract the username and the password from
+     * @param request {@link SuttonServletRequest} the HTTP request to extract the username and the password from
      * @return a {@link User} with the id and the password from the request
      * @throws NotAuthorizedException if the HTTP request doesn't implement the basic authorization
      */
-    public static User readUserFromHttpHeader(final HttpServletRequest request) {
+    public static User readUserFromHttpHeader(final SuttonServletRequest request) {
         final String authHeader = request != null ? request.getHeader(HttpHeaders.AUTHORIZATION) : null;
 
         if (authHeader != null) {

@@ -14,6 +14,7 @@
 
 package de.fhws.fiw.fds.suttondemoHibernate.server.api.services;
 
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.ServletRequestAdapter.JerseyServletRequest;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.JerseyUriInfoAdapter;
 import de.fhws.fiw.fds.sutton.server.api.services.AbstractService;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Location;
@@ -42,7 +43,7 @@ public class PersonService extends AbstractService {
         return new GetAllPersons.Builder().setQuery(new QueryByFirstAndLastName(firstName, lastName, offset, size, waitingTime))
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
-                .setHttpServletRequest(this.httpServletRequest)
+                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .setContext(this.context)
                 .build()
                 .execute();
@@ -55,7 +56,7 @@ public class PersonService extends AbstractService {
         return new GetSinglePerson.Builder().setRequestedId(id)
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
-                .setHttpServletRequest(this.httpServletRequest)
+                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .setContext(this.context)
                 .build()
                 .execute();
@@ -67,7 +68,7 @@ public class PersonService extends AbstractService {
         return new PostNewPerson.Builder().setModelToCreate(personModel)
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
-                .setHttpServletRequest(this.httpServletRequest)
+                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .setContext(this.context)
                 .build()
                 .execute();
@@ -81,7 +82,7 @@ public class PersonService extends AbstractService {
                 .setModelToUpdate(personModel)
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
-                .setHttpServletRequest(this.httpServletRequest)
+                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .setContext(this.context)
                 .build()
                 .execute();
@@ -94,7 +95,7 @@ public class PersonService extends AbstractService {
         return new DeleteSinglePerson.Builder().setRequestedId(id)
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
-                .setHttpServletRequest(this.httpServletRequest)
+                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .setContext(this.context)
                 .build()
                 .execute();
@@ -113,7 +114,7 @@ public class PersonService extends AbstractService {
                 .setQuery(new QueryByLocationName(personId, cityName, offset, size, waitingTime))
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
-                .setHttpServletRequest(this.httpServletRequest)
+                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .setContext(this.context)
                 .build()
                 .execute();
@@ -129,7 +130,7 @@ public class PersonService extends AbstractService {
                 .setRequestedId(locationId)
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
-                .setHttpServletRequest(this.httpServletRequest)
+                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .setContext(this.context)
                 .build()
                 .execute();
@@ -144,7 +145,7 @@ public class PersonService extends AbstractService {
                 .setModelToCreate(location)
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
-                .setHttpServletRequest(this.httpServletRequest)
+                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .setContext(this.context)
                 .build()
                 .execute();
@@ -161,7 +162,7 @@ public class PersonService extends AbstractService {
                 .setModelToUpdate(location)
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
-                .setHttpServletRequest(this.httpServletRequest)
+                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .setContext(this.context)
                 .build()
                 .execute();
@@ -176,7 +177,7 @@ public class PersonService extends AbstractService {
                 .setRequestedId(locationId)
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
-                .setHttpServletRequest(this.httpServletRequest)
+                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .setContext(this.context)
                 .build()
                 .execute();

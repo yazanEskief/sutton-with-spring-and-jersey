@@ -18,13 +18,13 @@ package de.fhws.fiw.fds.sutton.server.api.states;
 
 import de.fhws.fiw.fds.sutton.server.api.hyperlinks.Hyperlinks;
 import de.fhws.fiw.fds.sutton.server.api.rateLimiting.RateLimiter;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.ServletRequestAdapter.SuttonServletRequest;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.SuttonUriInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.Request;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.UriInfo;
 
 
 /**
@@ -36,7 +36,7 @@ public abstract class AbstractState {
 
     protected SuttonUriInfo uriInfo;
 
-    protected HttpServletRequest httpServletRequest;
+    protected SuttonServletRequest httpServletRequest;
 
     protected Request request;
 
@@ -170,7 +170,7 @@ public abstract class AbstractState {
     public static abstract class AbstractStateBuilder {
         protected SuttonUriInfo uriInfo;
 
-        protected HttpServletRequest httpServletRequest;
+        protected SuttonServletRequest httpServletRequest;
 
         protected Request request;
 
@@ -183,7 +183,7 @@ public abstract class AbstractState {
             return this;
         }
 
-        public AbstractStateBuilder setHttpServletRequest(final HttpServletRequest httpServletRequest) {
+        public AbstractStateBuilder setHttpServletRequest(final SuttonServletRequest httpServletRequest) {
             this.httpServletRequest = httpServletRequest;
             return this;
         }

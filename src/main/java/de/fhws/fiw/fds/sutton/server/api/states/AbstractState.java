@@ -19,8 +19,8 @@ package de.fhws.fiw.fds.sutton.server.api.states;
 import de.fhws.fiw.fds.sutton.server.api.hyperlinks.Hyperlinks;
 import de.fhws.fiw.fds.sutton.server.api.rateLimiting.RateLimiter;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.ServletRequestAdapter.SuttonServletRequest;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.requestAdapter.SuttonRequest;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.SuttonUriInfo;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Request;
 import jakarta.ws.rs.core.Response;
@@ -35,9 +35,9 @@ public abstract class AbstractState {
 
     protected SuttonUriInfo uriInfo;
 
-    protected SuttonServletRequest httpServletRequest;
+    protected SuttonServletRequest suttonServletRequest;
 
-    protected Request request;
+    protected SuttonRequest suttonRequest;
 
     protected Response.ResponseBuilder responseBuilder;
 
@@ -48,8 +48,8 @@ public abstract class AbstractState {
      */
     protected AbstractState(final AbstractStateBuilder builder) {
         this.uriInfo = builder.uriInfo;
-        this.httpServletRequest = builder.httpServletRequest;
-        this.request = builder.request;
+        this.suttonServletRequest = builder.suttonServletRequest;
+        this.suttonRequest = builder.SuttonRequest;
         this.rateLimiter = builder.rateLimiter != null ? builder.rateLimiter : RateLimiter.DEFAULT;
         this.responseBuilder = Response.ok();
     }
@@ -89,12 +89,12 @@ public abstract class AbstractState {
     }
 
     /**
-     * This reads the API-Key from the header of the {@link HttpServletRequest}.
+     * This reads the API-Key from the header of the {@link SuttonServletRequest}.
      *
      * @return the API-Key String of the header
      */
     private String getApiKeyFromRequest() {
-        return httpServletRequest.getHeader("API-Key");
+        return suttonServletRequest.getHeader("API-Key");
     }
 
     /**
@@ -156,7 +156,7 @@ public abstract class AbstractState {
      * @return the value {@link String} of the provided header from the request
      */
     protected final String getRequestHeader(final String headerName) {
-        return this.httpServletRequest.getHeader(headerName);
+        return this.suttonServletRequest.getHeader(headerName);
     }
 
     /**
@@ -166,9 +166,9 @@ public abstract class AbstractState {
     public static abstract class AbstractStateBuilder {
         protected SuttonUriInfo uriInfo;
 
-        protected SuttonServletRequest httpServletRequest;
+        protected SuttonServletRequest suttonServletRequest;
 
-        protected Request request;
+        protected SuttonRequest SuttonRequest;
 
         protected RateLimiter rateLimiter;
 
@@ -177,13 +177,13 @@ public abstract class AbstractState {
             return this;
         }
 
-        public AbstractStateBuilder setHttpServletRequest(final SuttonServletRequest httpServletRequest) {
-            this.httpServletRequest = httpServletRequest;
+        public AbstractStateBuilder setSuttonServletRequest(final SuttonServletRequest suttonServletRequest) {
+            this.suttonServletRequest = suttonServletRequest;
             return this;
         }
 
-        public AbstractStateBuilder setRequest(final Request request) {
-            this.request = request;
+        public AbstractStateBuilder setSuttonRequest(final SuttonRequest suttonRequest) {
+            this.SuttonRequest = suttonRequest;
             return this;
         }
 

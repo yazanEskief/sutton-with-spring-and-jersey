@@ -5,7 +5,6 @@ import jakarta.ws.rs.NotAuthorizedException;
 import jakarta.ws.rs.core.HttpHeaders;
 import org.apache.commons.codec.binary.Base64;
 
-
 import java.nio.charset.Charset;
 
 /**

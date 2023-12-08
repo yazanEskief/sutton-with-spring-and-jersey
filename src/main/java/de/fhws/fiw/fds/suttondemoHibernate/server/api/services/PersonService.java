@@ -15,6 +15,7 @@
 package de.fhws.fiw.fds.suttondemoHibernate.server.api.services;
 
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.ServletRequestAdapter.JerseyServletRequest;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.requestAdapter.JerseyRequest;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.JerseyUriInfoAdapter;
 import de.fhws.fiw.fds.sutton.server.api.services.AbstractService;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Location;
@@ -42,8 +43,8 @@ public class PersonService extends AbstractService {
             @DefaultValue("0") @QueryParam("wait") int waitingTime) {
         return new GetAllPersons.Builder().setQuery(new QueryByFirstAndLastName(firstName, lastName, offset, size, waitingTime))
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setRequest(this.request)
-                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                .setSuttonRequest(new JerseyRequest(this.request))
+                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .build()
                 .execute();
     }
@@ -54,8 +55,8 @@ public class PersonService extends AbstractService {
     public Response getSinglePerson(@PathParam("id") final long id) {
         return new GetSinglePerson.Builder().setRequestedId(id)
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setRequest(this.request)
-                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                .setSuttonRequest(new JerseyRequest(this.request))
+                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .build()
                 .execute();
     }
@@ -65,8 +66,8 @@ public class PersonService extends AbstractService {
     public Response createSinglePerson(final Person personModel) {
         return new PostNewPerson.Builder().setModelToCreate(personModel)
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setRequest(this.request)
-                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                .setSuttonRequest(new JerseyRequest(this.request))
+                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .build()
                 .execute();
     }
@@ -78,8 +79,8 @@ public class PersonService extends AbstractService {
         return new PutSinglePerson.Builder().setRequestedId(id)
                 .setModelToUpdate(personModel)
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setRequest(this.request)
-                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                .setSuttonRequest(new JerseyRequest(this.request))
+                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .build()
                 .execute();
     }
@@ -90,8 +91,8 @@ public class PersonService extends AbstractService {
     public Response deleteSinglePerson(@PathParam("id") final long id) {
         return new DeleteSinglePerson.Builder().setRequestedId(id)
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setRequest(this.request)
-                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                .setSuttonRequest(new JerseyRequest(this.request))
+                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .build()
                 .execute();
     }
@@ -108,8 +109,8 @@ public class PersonService extends AbstractService {
                 .setParentId(personId)
                 .setQuery(new QueryByLocationName(personId, cityName, offset, size, waitingTime))
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setRequest(this.request)
-                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                .setSuttonRequest(new JerseyRequest(this.request))
+                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .build()
                 .execute();
     }
@@ -123,8 +124,8 @@ public class PersonService extends AbstractService {
                 .setParentId(personId)
                 .setRequestedId(locationId)
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setRequest(this.request)
-                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                .setSuttonRequest(new JerseyRequest(this.request))
+                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .build()
                 .execute();
     }
@@ -137,8 +138,8 @@ public class PersonService extends AbstractService {
                 .setParentId(personId)
                 .setModelToCreate(location)
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setRequest(this.request)
-                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                .setSuttonRequest(new JerseyRequest(this.request))
+                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .build()
                 .execute();
     }
@@ -153,8 +154,8 @@ public class PersonService extends AbstractService {
                 .setRequestedId(locationId)
                 .setModelToUpdate(location)
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setRequest(this.request)
-                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                .setSuttonRequest(new JerseyRequest(this.request))
+                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .build()
                 .execute();
     }
@@ -167,8 +168,8 @@ public class PersonService extends AbstractService {
                 .setParentId(personId)
                 .setRequestedId(locationId)
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setRequest(this.request)
-                .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                .setSuttonRequest(new JerseyRequest(this.request))
+                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .build()
                 .execute();
     }

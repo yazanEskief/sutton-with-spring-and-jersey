@@ -1,6 +1,7 @@
 package de.fhws.fiw.fds.suttondemoHibernate.server.api.services;
 
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.ServletRequestAdapter.JerseyServletRequest;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.requestAdapter.JerseyRequest;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.JerseyUriInfoAdapter;
 import de.fhws.fiw.fds.sutton.server.api.services.AbstractService;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Location;
@@ -22,8 +23,8 @@ public class LocationService extends AbstractService
 		return new GetAllLocations.Builder( )
 			.setQuery( new GetAllLocations.AllLocations( ) )
 			.setUriInfo( new JerseyUriInfoAdapter(this.uriInfo) )
-			.setRequest( this.request )
-			.setHttpServletRequest( new JerseyServletRequest(this.httpServletRequest))
+			.setSuttonRequest( new JerseyRequest(this.request) )
+			.setSuttonServletRequest( new JerseyServletRequest(this.httpServletRequest))
 			.build( )
 			.execute( );
 	}
@@ -36,8 +37,8 @@ public class LocationService extends AbstractService
 		return new GetSingleLocation.Builder( )
 			.setRequestedId( id )
 			.setUriInfo( new JerseyUriInfoAdapter(this.uriInfo) )
-			.setRequest( this.request )
-			.setHttpServletRequest( new JerseyServletRequest(this.httpServletRequest) )
+			.setSuttonRequest( new JerseyRequest(this.request) )
+			.setSuttonServletRequest( new JerseyServletRequest(this.httpServletRequest) )
 			.build( )
 			.execute( );
 	}
@@ -49,8 +50,8 @@ public class LocationService extends AbstractService
 		return new PostNewLocation.Builder( )
 			.setModelToCreate( locationModel )
 			.setUriInfo( new JerseyUriInfoAdapter(this.uriInfo) )
-			.setRequest( this.request )
-			.setHttpServletRequest( new JerseyServletRequest(this.httpServletRequest) )
+			.setSuttonRequest( new JerseyRequest(this.request) )
+			.setSuttonServletRequest( new JerseyServletRequest(this.httpServletRequest) )
 			.build( )
 			.execute( );
 	}
@@ -64,8 +65,8 @@ public class LocationService extends AbstractService
 			.setRequestedId( id )
 			.setModelToUpdate( locationModel )
 			.setUriInfo( new JerseyUriInfoAdapter(this.uriInfo) )
-			.setRequest( this.request )
-			.setHttpServletRequest( new JerseyServletRequest(this.httpServletRequest) )
+			.setSuttonRequest( new JerseyRequest(this.request) )
+			.setSuttonServletRequest( new JerseyServletRequest(this.httpServletRequest) )
 			.build( )
 			.execute( );
 	}
@@ -78,8 +79,8 @@ public class LocationService extends AbstractService
 		return new DeleteSingleLocation.Builder( )
 			.setRequestedId( id )
 			.setUriInfo( new JerseyUriInfoAdapter(this.uriInfo) )
-			.setRequest( this.request )
-			.setHttpServletRequest( new JerseyServletRequest(this.httpServletRequest) )
+			.setSuttonRequest( new JerseyRequest(this.request) )
+			.setSuttonServletRequest( new JerseyServletRequest(this.httpServletRequest) )
 			.build( )
 			.execute( );
 	}

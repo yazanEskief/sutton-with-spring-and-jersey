@@ -128,8 +128,7 @@ public abstract class AbstractGetState<T extends AbstractModel> extends Abstract
     protected abstract void defineTransitionLinks();
 
     protected void defineSelfLink() {
-        final UriBuilder builder = this.uriInfo.getAbsolutePathBuilder();
-        final URI self = builder.build();
+        final URI self = this.uriInfo.getURI();
 
         Hyperlinks.addLink(this.responseBuilder, self, "self", getAcceptRequestHeader());
     }

@@ -1,5 +1,6 @@
 package de.fhws.fiw.fds.suttondemoHibernate.server.api.services;
 
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.JerseyUriInfoAdapter;
 import de.fhws.fiw.fds.sutton.server.api.services.AbstractService;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.states.dispatcher.GetDispatcher;
 import de.fhws.fiw.fds.suttondemoHibernate.server.database.utils.InitializeDatabase;
@@ -18,7 +19,7 @@ public class DispatcherService extends AbstractService {
 
     @GET
     public Response getDispatcher() {
-        return new GetDispatcher.Builder().setUriInfo(this.uriInfo)
+        return new GetDispatcher.Builder().setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(this.httpServletRequest)
                 .setContext(this.context)

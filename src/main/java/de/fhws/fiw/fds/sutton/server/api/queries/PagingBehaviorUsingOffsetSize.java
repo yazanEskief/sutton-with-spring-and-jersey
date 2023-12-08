@@ -16,15 +16,13 @@
 
 package de.fhws.fiw.fds.sutton.server.api.queries;
 
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.SuttonUriInfo;
 import de.fhws.fiw.fds.sutton.server.database.results.CollectionModelResult;
 import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
 
-import jakarta.ws.rs.core.UriBuilder;
-import jakarta.ws.rs.core.UriInfo;
 import java.net.URI;
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The PagingBehaviorUsingOffsetSize class is an instance of {@link PagingBehavior} and describes a paging behavior
@@ -125,11 +123,16 @@ public class PagingBehaviorUsingOffsetSize<T extends AbstractModel> extends Pagi
     }
 
     @Override
-    protected URI getNextUri(final UriInfo uriInfo, final CollectionModelResult<?> result) {
-        final UriBuilder uriBuilder = createUriBuilder(uriInfo);
+    protected URI getNextUri(final SuttonUriInfo uriInfo, final CollectionModelResult<?> result) {
         final int newOffset = Math.min(this.offset + this.size, result.getTotalNumberOfResult() - 1);
+        Map<String, Integer> queryParams = getQueryParamsAsMap(newOffset, this.size);
 
-        return uriBuilder.build(newOffset, this.size);
+        final String uriTemplate = uriInfo.createURIWithQueryParamTemplates(
+                getOffsetParamName(),
+                getSizeParamName()
+        );
+
+        return uriInfo.getURI(uriTemplate, queryParams);
     }
 
     @Override
@@ -138,18 +141,28 @@ public class PagingBehaviorUsingOffsetSize<T extends AbstractModel> extends Pagi
     }
 
     @Override
-    protected URI getPrevUri(final UriInfo uriInfo) {
-        final UriBuilder uriBuilder = createUriBuilder(uriInfo);
+    protected URI getPrevUri(final SuttonUriInfo uriInfo) {
         final int newOffset = Math.max(this.offset - this.size, 0);
+        Map<String, Integer> queryParams = getQueryParamsAsMap(newOffset, this.size);
 
-        return uriBuilder.build(newOffset, this.size);
+        final String uriTemplate = uriInfo.createURIWithQueryParamTemplates(
+                getOffsetParamName(),
+                getSizeParamName()
+        );
+
+        return uriInfo.getURI(uriTemplate, queryParams);
     }
 
     @Override
-    protected URI getSelfUri(final UriInfo uriInfo) {
-        final UriBuilder uriBuilder = createUriBuilder(uriInfo);
+    protected URI getSelfUri(final SuttonUriInfo uriInfo) {
+        Map<String, Integer> queryParams = getQueryParamsAsMap(this.offset, this.size);
 
-        return uriBuilder.build(this.offset, this.size);
+        final String uriTemplate = uriInfo.createURIWithQueryParamTemplates(
+                getOffsetParamName(),
+                getSizeParamName()
+        );
+
+        return uriInfo.getURI(uriTemplate, queryParams);
     }
 
     /**
@@ -169,10 +182,11 @@ public class PagingBehaviorUsingOffsetSize<T extends AbstractModel> extends Pagi
         this.size = Math.max(1, Math.min(size, getDefaultMaxPageSize()));
     }
 
-    private UriBuilder createUriBuilder(final UriInfo uriInfo) {
-        return uriInfo.getRequestUriBuilder()
-                .replaceQueryParam(getOffsetParamName(), getQueryParamOffsetAsTemplate())
-                .replaceQueryParam(getSizeParamName(), getQueryParamSizeAsTemplate());
+    private Map<String, Integer> getQueryParamsAsMap(final int offset, final int size) {
+        Map<String, Integer> queryParams = new HashMap<>();
+        queryParams.put(getOffsetParamName(), offset);
+        queryParams.put(getSizeParamName(), size);
+        return queryParams;
     }
 
     private String getOffsetParamName() {
@@ -181,14 +195,6 @@ public class PagingBehaviorUsingOffsetSize<T extends AbstractModel> extends Pagi
 
     private String getSizeParamName() {
         return this.sizeQueryParamName;
-    }
-
-    private final String getQueryParamOffsetAsTemplate() {
-        return "{" + getOffsetParamName() + "}";
-    }
-
-    private final String getQueryParamSizeAsTemplate() {
-        return "{" + getSizeParamName() + "}";
     }
 
 }

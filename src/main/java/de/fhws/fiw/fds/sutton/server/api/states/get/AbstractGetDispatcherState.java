@@ -68,8 +68,7 @@ public abstract class AbstractGetDispatcherState extends AbstractState {
     protected abstract void defineTransitionLinks();
 
     protected void defineSelfLink() {
-        final UriBuilder builder = this.uriInfo.getAbsolutePathBuilder();
-        final URI self = builder.build();
+        final URI self = this.uriInfo.getURI();
 
         Hyperlinks.addLink(this.responseBuilder, self, "self", getAcceptRequestHeader());
     }

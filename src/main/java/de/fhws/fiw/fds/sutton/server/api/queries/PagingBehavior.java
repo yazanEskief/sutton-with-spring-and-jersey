@@ -19,9 +19,9 @@ package de.fhws.fiw.fds.sutton.server.api.queries;
 import java.net.URI;
 
 import de.fhws.fiw.fds.sutton.server.api.hyperlinks.Hyperlinks;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.SuttonUriInfo;
 import de.fhws.fiw.fds.sutton.server.database.results.CollectionModelResult;
 import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
-import jakarta.ws.rs.core.UriInfo;
 
 /**
  * The PagingBehavior provides the basic requirements to create different paging mechanisms
@@ -100,26 +100,26 @@ public abstract class PagingBehavior<T extends AbstractModel> {
     /**
      * Creates a self URI
      *
-     * @param uriInfo a request {@link UriInfo} to use it to build a self URI
+     * @param uriInfo a request {@link SuttonUriInfo} to use it to build a self URI
      * @return a self {@link URI}
      */
-    protected abstract URI getSelfUri(final UriInfo uriInfo);
+    protected abstract URI getSelfUri(final SuttonUriInfo uriInfo);
 
     /**
      * Creates a URI for the previous page
      *
-     * @param uriInfo a request {@link UriInfo} to use it to build a URI for the previous page
+     * @param uriInfo a request {@link SuttonUriInfo} to use it to build a URI for the previous page
      * @return a {@link URI} for the previous page
      */
-    protected abstract URI getPrevUri(final UriInfo uriInfo);
+    protected abstract URI getPrevUri(final SuttonUriInfo uriInfo);
 
     /**
      * Creates a URI for the next page
      *
-     * @param uriInfo a request {@link UriInfo} to use it to build a URI for the next page
+     * @param uriInfo a request {@link SuttonUriInfo} to use it to build a URI for the next page
      * @param result  a {@link CollectionModelResult} of the full results fetched from the database
      * @return a {@link URI} for the next page
      */
-    protected abstract URI getNextUri(final UriInfo uriInfo, final CollectionModelResult<?> result);
+    protected abstract URI getNextUri(final SuttonUriInfo uriInfo, final CollectionModelResult<?> result);
 
 }

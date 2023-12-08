@@ -1,12 +1,12 @@
 package de.fhws.fiw.fds.sutton.server.api.queries;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.SuttonUriInfo;
 import de.fhws.fiw.fds.sutton.server.database.results.CollectionModelResult;
 import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
-
-import jakarta.ws.rs.core.UriBuilder;
-import jakarta.ws.rs.core.UriInfo;
 
 /**
  * The PagingBehaviorUsingPage class is an instance of {@link PagingBehavior} and describes a paging behavior
@@ -83,38 +83,47 @@ public class PagingBehaviorUsingPage<T extends AbstractModel> extends PagingBeha
     }
 
     @Override
-    protected URI getSelfUri(final UriInfo uriInfo) {
-        final UriBuilder uriBuilder = createUriBuilder(uriInfo);
-        return uriBuilder.build(this.pageNumber);
+    protected URI getSelfUri(final SuttonUriInfo uriInfo) {
+        Map<String, Integer> queryParamsMap = getQueryParamAsMap(this.pageNumber);
+        final String uriTemplate = uriInfo.createURIWithQueryParamTemplates(getPageParamName());
+        return uriInfo.getURI(uriTemplate, queryParamsMap);
     }
 
     @Override
-    protected URI getPrevUri(final UriInfo uriInfo) {
-        final UriBuilder uriBuilder = createUriBuilder(uriInfo);
-        return uriBuilder.build(this.pageNumber - 1);
+    protected URI getPrevUri(final SuttonUriInfo uriInfo) {
+        Map<String, Integer> queryParamsMap = getQueryParamAsMap(this.pageNumber - 1);
+        final String uriTemplate = uriInfo.createURIWithQueryParamTemplates(getPageParamName());
+        return uriInfo.getURI(uriTemplate, queryParamsMap);
     }
 
     @Override
-    protected URI getNextUri(final UriInfo uriInfo, final CollectionModelResult<?> result) {
-        final UriBuilder uriBuilder = createUriBuilder(uriInfo);
-        return uriBuilder.build(this.pageNumber + 1);
+    protected URI getNextUri(final SuttonUriInfo uriInfo, final CollectionModelResult<?> result) {
+        Map<String, Integer> queryParamsMap = getQueryParamAsMap(this.pageNumber + 1);
+        final String uriTemplate = uriInfo.createURIWithQueryParamTemplates(getPageParamName());
+        return uriInfo.getURI(uriTemplate, queryParamsMap);
+    }
+
+    private Map<String, Integer> getQueryParamAsMap(final int pageNumber) {
+        Map<String, Integer> result = new HashMap<>();
+        result.put(getPageParamName(), pageNumber);
+        return result;
     }
 
     private void setPageNumber(final int pageNumber) {
         this.pageNumber = Math.max(1, pageNumber);
     }
 
-    private UriBuilder createUriBuilder(final UriInfo uriInfo) {
-        return uriInfo.getRequestUriBuilder()
-                .replaceQueryParam(getPageParamName(), getQueryParamPageAsTemplate());
-    }
+//    private UriBuilder createUriBuilder(final UriInfo uriInfo) {
+//        return uriInfo.getRequestUriBuilder()
+//                .replaceQueryParam(getPageParamName(), getQueryParamPageAsTemplate());
+//    }
 
     private String getPageParamName() {
         return this.pageQueryParamName;
     }
 
-    private final String getQueryParamPageAsTemplate() {
-        return "{" + getPageParamName() + "}";
-    }
+//    private final String getQueryParamPageAsTemplate() {
+//        return "{" + getPageParamName() + "}";
+//    }
 
 }

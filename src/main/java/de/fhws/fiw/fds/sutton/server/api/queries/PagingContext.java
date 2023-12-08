@@ -16,8 +16,8 @@
 
 package de.fhws.fiw.fds.sutton.server.api.queries;
 
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.SuttonUriInfo;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.UriInfo;
 
 /**
  * The PagingContext provides the essential requirements to create a paging context in the response to make it clear
@@ -25,13 +25,13 @@ import jakarta.ws.rs.core.UriInfo;
  */
 public class PagingContext {
 
-    private final UriInfo uriInfo;
+    private final SuttonUriInfo uriInfo;
 
     private final Response.ResponseBuilder responseBuilder;
 
     private final String mediaType;
 
-    public PagingContext(final UriInfo uriInfo,
+    public PagingContext(final SuttonUriInfo uriInfo,
                          final Response.ResponseBuilder responseBuilder,
                          final String mediaType) {
         this.uriInfo = uriInfo;
@@ -39,7 +39,7 @@ public class PagingContext {
         this.mediaType = mediaType;
     }
 
-    public UriInfo getUriInfo() {
+    public SuttonUriInfo getUriInfo() {
         return this.uriInfo;
     }
 

@@ -14,6 +14,7 @@
 
 package de.fhws.fiw.fds.suttondemoHibernate.server.api.services;
 
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.JerseyUriInfoAdapter;
 import de.fhws.fiw.fds.sutton.server.api.services.AbstractService;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Location;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Person;
@@ -39,7 +40,7 @@ public class PersonService extends AbstractService {
             @DefaultValue("20") @QueryParam("size") int size,
             @DefaultValue("0") @QueryParam("wait") int waitingTime) {
         return new GetAllPersons.Builder().setQuery(new QueryByFirstAndLastName(firstName, lastName, offset, size, waitingTime))
-                .setUriInfo(this.uriInfo)
+                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(this.httpServletRequest)
                 .setContext(this.context)
@@ -52,7 +53,7 @@ public class PersonService extends AbstractService {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response getSinglePerson(@PathParam("id") final long id) {
         return new GetSinglePerson.Builder().setRequestedId(id)
-                .setUriInfo(this.uriInfo)
+                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(this.httpServletRequest)
                 .setContext(this.context)
@@ -64,7 +65,7 @@ public class PersonService extends AbstractService {
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response createSinglePerson(final Person personModel) {
         return new PostNewPerson.Builder().setModelToCreate(personModel)
-                .setUriInfo(this.uriInfo)
+                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(this.httpServletRequest)
                 .setContext(this.context)
@@ -78,7 +79,7 @@ public class PersonService extends AbstractService {
     public Response updateSinglePerson(@PathParam("id") final long id, final Person personModel) {
         return new PutSinglePerson.Builder().setRequestedId(id)
                 .setModelToUpdate(personModel)
-                .setUriInfo(this.uriInfo)
+                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(this.httpServletRequest)
                 .setContext(this.context)
@@ -91,7 +92,7 @@ public class PersonService extends AbstractService {
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response deleteSinglePerson(@PathParam("id") final long id) {
         return new DeleteSinglePerson.Builder().setRequestedId(id)
-                .setUriInfo(this.uriInfo)
+                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(this.httpServletRequest)
                 .setContext(this.context)
@@ -110,7 +111,7 @@ public class PersonService extends AbstractService {
         return new GetAllLocationsOfPerson.Builder()
                 .setParentId(personId)
                 .setQuery(new QueryByLocationName(personId, cityName, offset, size, waitingTime))
-                .setUriInfo(this.uriInfo)
+                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(this.httpServletRequest)
                 .setContext(this.context)
@@ -126,7 +127,7 @@ public class PersonService extends AbstractService {
         return new GetSingleLocationOfPerson.Builder()
                 .setParentId(personId)
                 .setRequestedId(locationId)
-                .setUriInfo(this.uriInfo)
+                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(this.httpServletRequest)
                 .setContext(this.context)
@@ -141,7 +142,7 @@ public class PersonService extends AbstractService {
         return new PostNewLocationOfPerson.Builder()
                 .setParentId(personId)
                 .setModelToCreate(location)
-                .setUriInfo(this.uriInfo)
+                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(this.httpServletRequest)
                 .setContext(this.context)
@@ -158,7 +159,7 @@ public class PersonService extends AbstractService {
                 .setParentId(personId)
                 .setRequestedId(locationId)
                 .setModelToUpdate(location)
-                .setUriInfo(this.uriInfo)
+                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(this.httpServletRequest)
                 .setContext(this.context)
@@ -173,7 +174,7 @@ public class PersonService extends AbstractService {
         return new DeleteSingleLocationOfPerson.Builder()
                 .setParentId(personId)
                 .setRequestedId(locationId)
-                .setUriInfo(this.uriInfo)
+                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(this.httpServletRequest)
                 .setContext(this.context)

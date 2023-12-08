@@ -1,5 +1,6 @@
 package de.fhws.fiw.fds.suttondemoHibernate.server.api.services;
 
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.JerseyUriInfoAdapter;
 import de.fhws.fiw.fds.sutton.server.api.services.AbstractService;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Location;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.states.locations.*;
@@ -19,7 +20,7 @@ public class LocationService extends AbstractService
 	{
 		return new GetAllLocations.Builder( )
 			.setQuery( new GetAllLocations.AllLocations( ) )
-			.setUriInfo( this.uriInfo )
+			.setUriInfo( new JerseyUriInfoAdapter(this.uriInfo) )
 			.setRequest( this.request )
 			.setHttpServletRequest( this.httpServletRequest )
 			.setContext( this.context )
@@ -34,7 +35,7 @@ public class LocationService extends AbstractService
 	{
 		return new GetSingleLocation.Builder( )
 			.setRequestedId( id )
-			.setUriInfo( this.uriInfo )
+			.setUriInfo( new JerseyUriInfoAdapter(this.uriInfo) )
 			.setRequest( this.request )
 			.setHttpServletRequest( this.httpServletRequest )
 			.setContext( this.context )
@@ -48,7 +49,7 @@ public class LocationService extends AbstractService
 	{
 		return new PostNewLocation.Builder( )
 			.setModelToCreate( locationModel )
-			.setUriInfo( this.uriInfo )
+			.setUriInfo( new JerseyUriInfoAdapter(this.uriInfo) )
 			.setRequest( this.request )
 			.setHttpServletRequest( this.httpServletRequest )
 			.setContext( this.context )
@@ -64,7 +65,7 @@ public class LocationService extends AbstractService
 		return new PutSingleLocation.Builder( )
 			.setRequestedId( id )
 			.setModelToUpdate( locationModel )
-			.setUriInfo( this.uriInfo )
+			.setUriInfo( new JerseyUriInfoAdapter(this.uriInfo) )
 			.setRequest( this.request )
 			.setHttpServletRequest( this.httpServletRequest )
 			.setContext( this.context )
@@ -79,7 +80,7 @@ public class LocationService extends AbstractService
 	{
 		return new DeleteSingleLocation.Builder( )
 			.setRequestedId( id )
-			.setUriInfo( this.uriInfo )
+			.setUriInfo( new JerseyUriInfoAdapter(this.uriInfo) )
 			.setRequest( this.request )
 			.setHttpServletRequest( this.httpServletRequest )
 			.setContext( this.context )

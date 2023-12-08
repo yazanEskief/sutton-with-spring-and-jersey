@@ -18,6 +18,7 @@ package de.fhws.fiw.fds.sutton.server.api.states;
 
 import de.fhws.fiw.fds.sutton.server.api.hyperlinks.Hyperlinks;
 import de.fhws.fiw.fds.sutton.server.api.rateLimiting.RateLimiter;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.SuttonUriInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.container.ContainerRequestContext;
@@ -33,7 +34,7 @@ import jakarta.ws.rs.core.UriInfo;
  */
 public abstract class AbstractState {
 
-    protected UriInfo uriInfo;
+    protected SuttonUriInfo uriInfo;
 
     protected HttpServletRequest httpServletRequest;
 
@@ -167,7 +168,7 @@ public abstract class AbstractState {
      * instantiate state classes
      */
     public static abstract class AbstractStateBuilder {
-        protected UriInfo uriInfo;
+        protected SuttonUriInfo uriInfo;
 
         protected HttpServletRequest httpServletRequest;
 
@@ -177,7 +178,7 @@ public abstract class AbstractState {
 
         protected RateLimiter rateLimiter;
 
-        public AbstractStateBuilder setUriInfo(final UriInfo uriInfo) {
+        public AbstractStateBuilder setUriInfo(final SuttonUriInfo uriInfo) {
             this.uriInfo = uriInfo;
             return this;
         }

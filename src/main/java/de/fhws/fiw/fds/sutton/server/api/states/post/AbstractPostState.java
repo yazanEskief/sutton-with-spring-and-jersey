@@ -95,9 +95,7 @@ public abstract class AbstractPostState<T extends AbstractModel> extends Abstrac
     protected abstract void defineTransitionLinks();
 
     protected void defineLocationLink() {
-        final UriBuilder builder = this.uriInfo.getAbsolutePathBuilder();
-        final URI location = builder.path(Long.toString(this.modelToStore.getId()))
-                .build();
+        final URI location = this.uriInfo.appendIdToPath(this.modelToStore.getId());
         this.responseBuilder.status(Response.Status.CREATED);
         this.responseBuilder.location(location);
     }

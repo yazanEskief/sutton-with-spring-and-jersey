@@ -16,6 +16,7 @@
 
 package de.fhws.fiw.fds.sutton.server.api.hyperlinks;
 
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.SuttonUriInfo;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
@@ -39,16 +40,13 @@ public class Hyperlinks {
      * @param path            {@link String} the relative path to use it to build the href for the hyperlink
      * @param params          an ellipsis of {@link Object} to be built to the href part of the hyperlink
      */
-    public static void addLink(final UriInfo uriInfo,
+    public static void addLink(final SuttonUriInfo uriInfo,
                                final Response.ResponseBuilder responseBuilder,
                                final String path,
                                final String relationType,
                                final String mediaType,
                                final Object... params) {
-        final UriBuilder builder = uriInfo.getAbsolutePathBuilder();
-        builder.replacePath(beforeQuestionMark(path));
-        builder.replaceQuery(afterQuestionMark(path));
-        String uriTemplate = builder.toTemplate();
+        String uriTemplate = uriInfo.getUriTemplate(path);
 
         for (final Object p : params) {
             uriTemplate = replaceFirstTemplate(uriTemplate, p);
@@ -57,21 +55,21 @@ public class Hyperlinks {
         responseBuilder.header("Link", linkHeader(uriTemplate, relationType, mediaType));
     }
 
-    private static String beforeQuestionMark(final String path) {
-        if (path.contains("?")) {
-            return path.substring(0, path.indexOf("?"));
-        } else {
-            return path;
-        }
-    }
-
-    private static String afterQuestionMark(final String path) {
-        if (path.contains("?")) {
-            return path.substring(path.indexOf("?") + 1);
-        } else {
-            return "";
-        }
-    }
+//    private static String beforeQuestionMark(final String path) {
+//        if (path.contains("?")) {
+//            return path.substring(0, path.indexOf("?"));
+//        } else {
+//            return path;
+//        }
+//    }
+//
+//    private static String afterQuestionMark(final String path) {
+//        if (path.contains("?")) {
+//            return path.substring(path.indexOf("?") + 1);
+//        } else {
+//            return "";
+//        }
+//    }
 
     public static String replaceFirstTemplate(final String uri, final Object value) {
         return uri.replaceFirst("\\{id\\}", value.toString());

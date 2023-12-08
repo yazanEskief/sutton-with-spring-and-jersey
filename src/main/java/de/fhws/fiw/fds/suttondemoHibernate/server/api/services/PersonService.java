@@ -44,7 +44,6 @@ public class PersonService extends AbstractService {
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setContext(this.context)
                 .build()
                 .execute();
     }
@@ -57,7 +56,6 @@ public class PersonService extends AbstractService {
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setContext(this.context)
                 .build()
                 .execute();
     }
@@ -69,7 +67,6 @@ public class PersonService extends AbstractService {
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setContext(this.context)
                 .build()
                 .execute();
     }
@@ -83,7 +80,6 @@ public class PersonService extends AbstractService {
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setContext(this.context)
                 .build()
                 .execute();
     }
@@ -96,7 +92,6 @@ public class PersonService extends AbstractService {
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setContext(this.context)
                 .build()
                 .execute();
     }
@@ -115,7 +110,6 @@ public class PersonService extends AbstractService {
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setContext(this.context)
                 .build()
                 .execute();
     }
@@ -131,7 +125,6 @@ public class PersonService extends AbstractService {
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setContext(this.context)
                 .build()
                 .execute();
     }
@@ -146,7 +139,6 @@ public class PersonService extends AbstractService {
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setContext(this.context)
                 .build()
                 .execute();
     }
@@ -163,7 +155,6 @@ public class PersonService extends AbstractService {
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setContext(this.context)
                 .build()
                 .execute();
     }
@@ -178,7 +169,6 @@ public class PersonService extends AbstractService {
                 .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setContext(this.context)
                 .build()
                 .execute();
     }

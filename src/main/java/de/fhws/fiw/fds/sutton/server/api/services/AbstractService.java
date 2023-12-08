@@ -18,7 +18,6 @@ package de.fhws.fiw.fds.sutton.server.api.services;
 
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Request;
 import jakarta.ws.rs.core.UriInfo;
@@ -26,13 +25,7 @@ import jakarta.ws.rs.core.UriInfo;
 public class AbstractService {
 
     @Context
-    protected ContainerRequestContext context;
-
-    @Context
     protected UriInfo uriInfo;
-
-    @Context
-    protected ContainerRequestContext requestContext;
 
     @Context
     protected Request request;

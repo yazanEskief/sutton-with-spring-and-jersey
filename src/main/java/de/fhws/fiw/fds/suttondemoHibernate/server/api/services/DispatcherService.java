@@ -23,7 +23,6 @@ public class DispatcherService extends AbstractService {
         return new GetDispatcher.Builder().setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
                 .setRequest(this.request)
                 .setHttpServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setContext(this.context)
                 .build()
                 .execute();
     }

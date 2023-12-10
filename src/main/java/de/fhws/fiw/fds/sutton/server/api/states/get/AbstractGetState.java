@@ -17,11 +17,11 @@
 package de.fhws.fiw.fds.sutton.server.api.states.get;
 
 import de.fhws.fiw.fds.sutton.server.api.hyperlinks.Hyperlinks;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.responseAdapter.Status;
 import de.fhws.fiw.fds.sutton.server.api.states.AbstractState;
 import de.fhws.fiw.fds.sutton.server.database.results.SingleModelResult;
 import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
 
-import jakarta.ws.rs.core.Response;
 import java.net.URI;
 
 /**
@@ -31,7 +31,7 @@ import java.net.URI;
  * <p>Each extending state class has to define a builder class, which must extend
  * {@link AbstractGetState.AbstractGetStateBuilder}.</p>
  */
-public abstract class AbstractGetState<T extends AbstractModel> extends AbstractState {
+public abstract class AbstractGetState<T extends AbstractModel, R> extends AbstractState<R, T> {
 
     /**
      * id {@link Long} of the model to be searched in the database
@@ -43,13 +43,13 @@ public abstract class AbstractGetState<T extends AbstractModel> extends Abstract
      */
     protected SingleModelResult<T> requestedModel;
 
-    public AbstractGetState(final AbstractGetStateBuilder builder) {
+    public AbstractGetState(final AbstractGetStateBuilder<R, T> builder) {
         super(builder);
         this.requestedId = builder.requestedId;
     }
 
     @Override
-    protected Response buildInternal() {
+    protected R buildInternal() {
         configureState();
 
         authorizeRequest();
@@ -57,20 +57,16 @@ public abstract class AbstractGetState<T extends AbstractModel> extends Abstract
         this.requestedModel = loadModel();
 
         if (this.requestedModel.hasError()) {
-            return Response.serverError()
-                    .build();
+            return this.suttonResponse.status(Status.INTERNAL_SERVER_ERROR).build();
         }
 
         if (this.requestedModel.isEmpty()) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .build();
+            return this.suttonResponse.status(Status.NOT_FOUND).build();
         }
 
         if (clientKnowsCurrentModelState(this.requestedModel.getResult())) {
-            return Response.notModified().build();
+            return this.suttonResponse.status(Status.NOT_MODIFIED).build();
         }
-
-        this.responseBuilder = Response.ok();
 
         return createResponse();
     }
@@ -95,7 +91,7 @@ public abstract class AbstractGetState<T extends AbstractModel> extends Abstract
         return false;
     }
 
-    protected Response createResponse() {
+    protected R createResponse() {
         defineHttpResponseBody();
 
         defineHttpCaching();
@@ -104,11 +100,11 @@ public abstract class AbstractGetState<T extends AbstractModel> extends Abstract
 
         defineTransitionLinks();
 
-        return this.responseBuilder.build();
+        return this.suttonResponse.build();
     }
 
     protected void defineHttpResponseBody() {
-        this.responseBuilder.entity(this.requestedModel.getResult());
+        this.suttonResponse.entity(this.requestedModel.getResult());
     }
 
     /**
@@ -129,16 +125,16 @@ public abstract class AbstractGetState<T extends AbstractModel> extends Abstract
     protected void defineSelfLink() {
         final URI self = this.uriInfo.getURI();
 
-        Hyperlinks.addLink(this.responseBuilder, self, "self", getAcceptRequestHeader());
+        Hyperlinks.addLink(this.suttonResponse, self, "self", getAcceptRequestHeader());
     }
 
-    public static abstract class AbstractGetStateBuilder extends AbstractState.AbstractStateBuilder {
+    public static abstract class AbstractGetStateBuilder<R, T extends AbstractModel> extends AbstractState.AbstractStateBuilder<R, T> {
         /**
          * id {@link Long} of the model to be searched in the database
          */
         protected long requestedId;
 
-        public AbstractGetStateBuilder setRequestedId(final long requestedId) {
+        public AbstractGetStateBuilder<R, T> setRequestedId(final long requestedId) {
             this.requestedId = requestedId;
             return this;
         }

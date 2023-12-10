@@ -21,24 +21,22 @@ import de.fhws.fiw.fds.sutton.server.api.states.get.AbstractGetCollectionState;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Person;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.queries.QueryByFirstAndLastName;
 
-import jakarta.ws.rs.core.GenericEntity;
 import java.util.Collection;
 
 
-public class GetAllPersons extends AbstractGetCollectionState<Person> {
+public class GetAllPersons<R> extends AbstractGetCollectionState<Person, R> {
 
-    public GetAllPersons(final Builder builder) {
+    public GetAllPersons(final Builder<R> builder) {
         super(builder);
     }
 
     protected void defineHttpResponseBody() {
-        this.responseBuilder.entity(new GenericEntity<Collection<Person>>(this.result.getResult()) {
-        });
+        this.suttonResponse.entity(this.result.getResult());
     }
 
     @Override
     protected void authorizeRequest() {
-        QueryByFirstAndLastName theQuery = (QueryByFirstAndLastName) this.query;
+        QueryByFirstAndLastName<R> theQuery = (QueryByFirstAndLastName<R>) this.query;
         int waitingTime = theQuery.getWaitingTime();
 
         try {
@@ -53,11 +51,11 @@ public class GetAllPersons extends AbstractGetCollectionState<Person> {
         addLink(PersonUri.REL_PATH, PersonRelTypes.CREATE_PERSON, getAcceptRequestHeader());
     }
 
-    public static class Builder extends AbstractGetCollectionStateBuilder<Person> {
+    public static class Builder<R> extends AbstractGetCollectionStateBuilder<Person, R> {
 
         @Override
-        public AbstractState build() {
-            return new GetAllPersons(this);
+        public AbstractState<R, Collection<Person>> build() {
+            return new GetAllPersons<>(this);
         }
     }
 }

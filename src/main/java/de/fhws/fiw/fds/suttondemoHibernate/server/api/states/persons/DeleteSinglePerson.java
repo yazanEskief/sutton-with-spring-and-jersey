@@ -23,9 +23,9 @@ import de.fhws.fiw.fds.sutton.server.database.results.SingleModelResult;
 import de.fhws.fiw.fds.suttondemoHibernate.server.DaoFactory;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Person;
 
-public class DeleteSinglePerson extends AbstractDeleteState<Person> {
+public class DeleteSinglePerson<R> extends AbstractDeleteState<Person, R> {
 
-    public DeleteSinglePerson(final Builder builder) {
+    public DeleteSinglePerson(final Builder<R> builder) {
         super(builder);
     }
 
@@ -49,10 +49,10 @@ public class DeleteSinglePerson extends AbstractDeleteState<Person> {
 
     }
 
-    public static class Builder extends AbstractDeleteStateBuilder {
+    public static class Builder<R> extends AbstractDeleteStateBuilder<R> {
         @Override
-        public AbstractState build() {
-            return new DeleteSinglePerson(this);
+        public AbstractState<R, Void> build() {
+            return new DeleteSinglePerson<>(this);
         }
     }
 }

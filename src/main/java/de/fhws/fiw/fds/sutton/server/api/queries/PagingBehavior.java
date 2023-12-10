@@ -17,6 +17,7 @@
 package de.fhws.fiw.fds.sutton.server.api.queries;
 
 import java.net.URI;
+import java.util.Collection;
 
 import de.fhws.fiw.fds.sutton.server.api.hyperlinks.Hyperlinks;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.SuttonUriInfo;
@@ -26,7 +27,7 @@ import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
 /**
  * The PagingBehavior provides the basic requirements to create different paging mechanisms
  */
-public abstract class PagingBehavior<T extends AbstractModel> {
+public abstract class PagingBehavior<T extends AbstractModel, R> {
 
     /**
      * Returns the offset, where the result's page should start
@@ -47,7 +48,7 @@ public abstract class PagingBehavior<T extends AbstractModel> {
      *
      * @param pagingContext the {@link PagingContext} containing the required information to create the self link
      */
-    public final void addSelfLink(final PagingContext pagingContext) {
+    public final void addSelfLink(final PagingContext<R, Collection<T>> pagingContext) {
         Hyperlinks.addLink(pagingContext.getResponseBuilder(),
                 getSelfUri(pagingContext.getUriInfo()),
                 "self",
@@ -59,7 +60,7 @@ public abstract class PagingBehavior<T extends AbstractModel> {
      *
      * @param pagingContext the {@link PagingContext} containing the required information to create the previous page link
      */
-    public final void addPrevPageLink(final PagingContext pagingContext) {
+    public final void addPrevPageLink(final PagingContext<R, Collection<T>> pagingContext) {
         if (hasPrevLink()) {
             Hyperlinks.addLink(pagingContext.getResponseBuilder(),
                     getPrevUri(pagingContext.getUriInfo()),
@@ -74,8 +75,8 @@ public abstract class PagingBehavior<T extends AbstractModel> {
      * @param pagingContext  the {@link PagingContext} containing the required information to create the next page link
      * @param databaseResult the {@link CollectionModelResult} of the full results fetched from the database to check if a next page could be created
      */
-    public final void addNextPageLink(final PagingContext pagingContext,
-                                      final CollectionModelResult<?> databaseResult) {
+    public final void addNextPageLink(final PagingContext<R, Collection<T>> pagingContext,
+                                      final CollectionModelResult<T> databaseResult) {
         if (hasNextLink(databaseResult)) {
             Hyperlinks.addLink(pagingContext.getResponseBuilder(),
                     getNextUri(pagingContext.getUriInfo(), databaseResult),
@@ -90,7 +91,7 @@ public abstract class PagingBehavior<T extends AbstractModel> {
      * @param result a {@link CollectionModelResult} with full results fetched from the database
      * @return true if there is a next page
      */
-    protected abstract boolean hasNextLink(final CollectionModelResult<?> result);
+    protected abstract boolean hasNextLink(final CollectionModelResult<T> result);
 
     /**
      * This method returns true if there is a previous page to the current page
@@ -120,6 +121,6 @@ public abstract class PagingBehavior<T extends AbstractModel> {
      * @param result  a {@link CollectionModelResult} of the full results fetched from the database
      * @return a {@link URI} for the next page
      */
-    protected abstract URI getNextUri(final SuttonUriInfo uriInfo, final CollectionModelResult<?> result);
+    protected abstract URI getNextUri(final SuttonUriInfo uriInfo, final CollectionModelResult<T> result);
 
 }

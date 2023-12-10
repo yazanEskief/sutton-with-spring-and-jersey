@@ -6,9 +6,10 @@ import de.fhws.fiw.fds.sutton.server.database.results.SingleModelResult;
 import de.fhws.fiw.fds.suttondemoHibernate.server.DaoFactory;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Location;
 
-public class GetSingleLocationOfPerson extends AbstractGetRelationState<Location> {
 
-    public GetSingleLocationOfPerson( final Builder builder )
+public class GetSingleLocationOfPerson<R> extends AbstractGetRelationState<Location, R> {
+
+    public GetSingleLocationOfPerson( final Builder<R> builder )
     {
         super( builder );
     }
@@ -63,11 +64,12 @@ public class GetSingleLocationOfPerson extends AbstractGetRelationState<Location
                 .isEmpty( );
     }
 
-    public static class Builder extends AbstractGetRelationStateBuilder
+    public static class Builder<R> extends AbstractGetRelationStateBuilder<R, Location>
     {
-        @Override public AbstractState build( )
+        @Override
+        public AbstractState<R, Location> build( )
         {
-            return new GetSingleLocationOfPerson( this );
+            return new GetSingleLocationOfPerson<>( this );
         }
     }
 

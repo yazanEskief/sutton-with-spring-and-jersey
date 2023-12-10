@@ -4,6 +4,8 @@ import de.fhws.fiw.fds.sutton.server.api.rateLimiting.model.APIKey;
 import de.fhws.fiw.fds.sutton.server.api.rateLimiting.operation.ReadAPIKeyOperation;
 import de.fhws.fiw.fds.sutton.server.api.rateLimiting.operation.ReadAllAPIKeysOperation;
 import de.fhws.fiw.fds.sutton.server.api.rateLimiting.operation.UpdateAPIKeyOperation;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.Exceptions.SuttonWebAppException;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.responseAdapter.Status;
 import de.fhws.fiw.fds.sutton.server.database.SearchParameter;
 import de.fhws.fiw.fds.sutton.server.database.hibernate.IDatabaseConnection;
 
@@ -42,10 +44,11 @@ public class RateLimiter implements IDatabaseConnection {
     public boolean isRequestAllowed(String apiKey) {
         APIKey apiKeyOnDB = new ReadAPIKeyOperation(SUTTON_EMF, apiKey).start().getResult();
         if (apiKeyOnDB == null) {
-            Response errorResponse = Response.status(Response.Status.BAD_REQUEST)
-                    .entity("API-Key " + apiKey + " not found.")
-                    .build();
-            throw new WebApplicationException(errorResponse);
+//            Response errorResponse = Response.status(Response.Status.BAD_REQUEST)
+//                    .entity("API-Key " + apiKey + " not found.")
+//                    .build();
+//            throw new WebApplicationException(errorResponse);
+            throw new SuttonWebAppException(Status.BAD_REQUEST, "API-Key " + apiKey + " not found.");
         }
 
         long currentTimestamp = System.currentTimeMillis();

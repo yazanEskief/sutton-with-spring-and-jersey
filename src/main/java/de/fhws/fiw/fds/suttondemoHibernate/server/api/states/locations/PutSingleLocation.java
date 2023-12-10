@@ -7,9 +7,9 @@ import de.fhws.fiw.fds.sutton.server.database.results.SingleModelResult;
 import de.fhws.fiw.fds.suttondemoHibernate.server.DaoFactory;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Location;
 
-public class PutSingleLocation extends AbstractPutState<Location> {
+public class PutSingleLocation<R> extends AbstractPutState<Location, R> {
 
-    public PutSingleLocation( final Builder builder )
+    public PutSingleLocation( final Builder<R> builder )
     {
         super( builder );
     }
@@ -35,11 +35,11 @@ public class PutSingleLocation extends AbstractPutState<Location> {
                 this.modelToUpdate.getId( ) );
     }
 
-    public static class Builder extends AbstractPutStateBuilder<Location>
+    public static class Builder<R> extends AbstractPutStateBuilder<Location, R>
     {
-        @Override public AbstractState build( )
+        @Override public AbstractState<R, Void> build( )
         {
-            return new PutSingleLocation( this );
+            return new PutSingleLocation<>( this );
         }
     }
 

@@ -7,9 +7,9 @@ import de.fhws.fiw.fds.sutton.server.database.results.SingleModelResult;
 import de.fhws.fiw.fds.suttondemoHibernate.server.DaoFactory;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Location;
 
-public class PutSingleLocationOfPerson extends AbstractPutRelationState<Location> {
+public class PutSingleLocationOfPerson<R> extends AbstractPutRelationState<Location, R> {
 
-    public PutSingleLocationOfPerson(final Builder builder) {
+    public PutSingleLocationOfPerson(final Builder<R> builder) {
         super(builder);
     }
 
@@ -36,10 +36,10 @@ public class PutSingleLocationOfPerson extends AbstractPutRelationState<Location
                 this.primaryId, this.requestedId);
     }
 
-    public static class Builder extends AbstractPutRelationStateBuilder<Location> {
+    public static class Builder<R> extends AbstractPutRelationStateBuilder<Location, R> {
         @Override
-        public AbstractState build() {
-            return new PutSingleLocationOfPerson(this);
+        public AbstractState<R, Void> build() {
+            return new PutSingleLocationOfPerson<>(this);
         }
     }
 

@@ -18,11 +18,12 @@ package de.fhws.fiw.fds.sutton.server.api.states.get;
 
 import de.fhws.fiw.fds.sutton.server.api.queries.AbstractQuery;
 import de.fhws.fiw.fds.sutton.server.api.queries.PagingContext;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.responseAdapter.Status;
 import de.fhws.fiw.fds.sutton.server.api.states.AbstractState;
 import de.fhws.fiw.fds.sutton.server.database.results.CollectionModelResult;
 import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
-import jakarta.ws.rs.core.Response;
 
+import java.util.Collection;
 
 /**
  * <p>The AbstractGetCollectionState extends the {@link AbstractState} and provides the required methods and
@@ -31,7 +32,7 @@ import jakarta.ws.rs.core.Response;
  * <p>Each extending state class has to define a builder class, which must extend
  * {@link AbstractGetCollectionState.AbstractGetCollectionStateBuilder}.</p>
  */
-public abstract class AbstractGetCollectionState<T extends AbstractModel> extends AbstractState {
+public abstract class AbstractGetCollectionState<T extends AbstractModel, R> extends AbstractState<R, Collection<T>> {
 
     /**
      * The header name {@link String} of the total number of results found in the database to be sent in
@@ -48,20 +49,20 @@ public abstract class AbstractGetCollectionState<T extends AbstractModel> extend
      * The query {@link AbstractQuery} to be used to fetch the resources from the database and to set the paging
      * behavior
      */
-    protected AbstractQuery<T> query;
+    protected AbstractQuery<T, R> query;
 
     /**
      * the collection {@link CollectionModelResult} of the requested resources to be sent to the client
      */
     protected CollectionModelResult<T> result;
 
-    protected AbstractGetCollectionState(final AbstractGetCollectionStateBuilder<T> builder) {
+    protected AbstractGetCollectionState(final AbstractGetCollectionStateBuilder<T, R> builder) {
         super(builder);
         this.query = builder.query;
     }
 
     @Override
-    protected Response buildInternal() {
+    protected R buildInternal() {
         configureState();
 
         authorizeRequest();
@@ -69,8 +70,7 @@ public abstract class AbstractGetCollectionState<T extends AbstractModel> extend
         this.result = loadModels();
 
         if (this.result.hasError()) {
-            return Response.serverError()
-                    .build();
+            return this.suttonResponse.status(Status.INTERNAL_SERVER_ERROR).build();
         }
 
         return createResponse();
@@ -89,7 +89,7 @@ public abstract class AbstractGetCollectionState<T extends AbstractModel> extend
         return this.query.startQuery();
     }
 
-    protected Response createResponse() {
+    protected R createResponse() {
         defineHttpHeaderTotalNumberOfResults();
 
         defineHttpHeaderNumberOfResults();
@@ -102,11 +102,11 @@ public abstract class AbstractGetCollectionState<T extends AbstractModel> extend
 
         defineTransitionLinks();
 
-        return this.responseBuilder.build();
+        return this.suttonResponse.build();
     }
 
     protected void defineHttpHeaderTotalNumberOfResults() {
-        this.responseBuilder.header(getHeaderForTotalNumberOfResults(), this.result.getTotalNumberOfResult());
+        this.suttonResponse.header(getHeaderForTotalNumberOfResults(), this.result.getTotalNumberOfResult());
     }
 
     protected String getHeaderForTotalNumberOfResults() {
@@ -119,7 +119,7 @@ public abstract class AbstractGetCollectionState<T extends AbstractModel> extend
     protected abstract void defineHttpResponseBody();
 
     protected void defineHttpHeaderNumberOfResults() {
-        this.responseBuilder.header(getHeaderForNumberOfResults(), this.result.getResult().size());
+        this.suttonResponse.header(getHeaderForNumberOfResults(), this.result.getResult().size());
     }
 
     protected String getHeaderForNumberOfResults() {
@@ -133,7 +133,7 @@ public abstract class AbstractGetCollectionState<T extends AbstractModel> extend
     protected abstract void defineTransitionLinks();
 
     protected void definePagingLinks() {
-        final PagingContext pagingContext = createPagingContext();
+        final PagingContext<R, Collection<T>> pagingContext = createPagingContext();
 
         this.query.addPrevPageLink(pagingContext);
         this.query.addNextPageLink(pagingContext);
@@ -143,15 +143,15 @@ public abstract class AbstractGetCollectionState<T extends AbstractModel> extend
         this.query.addSelfLink(createPagingContext());
     }
 
-    private PagingContext createPagingContext() {
-        return new PagingContext(this.uriInfo, this.responseBuilder, getAcceptRequestHeader());
+    private PagingContext<R, Collection<T>> createPagingContext() {
+        return new PagingContext<>(this.uriInfo, this.suttonResponse, getAcceptRequestHeader());
     }
 
-    public static abstract class AbstractGetCollectionStateBuilder<T extends AbstractModel>
-            extends AbstractStateBuilder {
-        protected AbstractQuery<T> query;
+    public static abstract class AbstractGetCollectionStateBuilder<T extends AbstractModel, R>
+            extends AbstractStateBuilder<R, Collection<T>> {
+        protected AbstractQuery<T, R> query;
 
-        public AbstractGetCollectionStateBuilder setQuery(final AbstractQuery<T> query) {
+        public AbstractGetCollectionStateBuilder<T, R> setQuery(final AbstractQuery<T, R> query) {
             this.query = query;
             return this;
         }

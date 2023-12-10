@@ -7,9 +7,9 @@ import de.fhws.fiw.fds.sutton.server.database.results.SingleModelResult;
 import de.fhws.fiw.fds.suttondemoHibernate.server.DaoFactory;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Location;
 
-public class DeleteSingleLocationOfPerson extends AbstractDeleteRelationState<Location> {
+public class DeleteSingleLocationOfPerson<R> extends AbstractDeleteRelationState<Location, R> {
 
-    public DeleteSingleLocationOfPerson(final Builder builder) {
+    public DeleteSingleLocationOfPerson(final Builder<R> builder) {
         super(builder);
     }
 
@@ -36,10 +36,10 @@ public class DeleteSingleLocationOfPerson extends AbstractDeleteRelationState<Lo
                 this.primaryId);
     }
 
-    public static class Builder extends AbstractDeleteRelationStateBuilder {
+    public static class Builder<R> extends AbstractDeleteRelationStateBuilder<R> {
         @Override
-        public AbstractState build() {
-            return new DeleteSingleLocationOfPerson(this);
+        public AbstractState<R, Void> build() {
+            return new DeleteSingleLocationOfPerson<R>(this);
         }
     }
 

@@ -16,11 +16,11 @@
 
 package de.fhws.fiw.fds.sutton.server.api.states.delete;
 
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.responseAdapter.Status;
 import de.fhws.fiw.fds.sutton.server.api.states.AbstractState;
 import de.fhws.fiw.fds.sutton.server.database.results.NoContentResult;
 import de.fhws.fiw.fds.sutton.server.database.results.SingleModelResult;
 import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
-import jakarta.ws.rs.core.Response;
 
 
 /**
@@ -30,7 +30,7 @@ import jakarta.ws.rs.core.Response;
  * <p>Each extending state class has to define a builder class, which must extend
  * {@link AbstractDeleteState.AbstractDeleteStateBuilder}.</p>
  */
-public abstract class AbstractDeleteState<T extends AbstractModel> extends AbstractState {
+public abstract class AbstractDeleteState<T extends AbstractModel, R> extends AbstractState<R, Void> {
 
     /**
      * id {@link Long} of the model to be deleted
@@ -47,13 +47,13 @@ public abstract class AbstractDeleteState<T extends AbstractModel> extends Abstr
      */
     protected NoContentResult resultAfterDelete;
 
-    public AbstractDeleteState(final AbstractDeleteStateBuilder builder) {
+    public AbstractDeleteState(final AbstractDeleteStateBuilder<R> builder) {
         super(builder);
         this.modelIdToDelete = builder.requestedId;
     }
 
     @Override
-    protected Response buildInternal() {
+    protected R buildInternal() {
         configureState();
 
         authorizeRequest();
@@ -61,19 +61,17 @@ public abstract class AbstractDeleteState<T extends AbstractModel> extends Abstr
         this.modelToDelete = loadModel();
 
         if (this.modelToDelete.isEmpty()) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .build();
+            return this.suttonResponse.status(Status.NOT_FOUND).build();
         }
 
         if (clientDoesNotKnowCurrentModelState(this.modelToDelete.getResult())) {
-            return Response.status(Response.Status.PRECONDITION_FAILED).build();
+            return this.suttonResponse.status(Status.PRECONDITION_FAILED).build();
         }
 
         this.resultAfterDelete = deleteModel();
 
         if (this.resultAfterDelete.hasError()) {
-            return Response.serverError()
-                    .build();
+            return this.suttonResponse.status(Status.INTERNAL_SERVER_ERROR).build();
         }
 
         return createResponse();
@@ -106,22 +104,22 @@ public abstract class AbstractDeleteState<T extends AbstractModel> extends Abstr
      */
     protected abstract NoContentResult deleteModel();
 
-    protected Response createResponse() {
+    protected R createResponse() {
         defineResponseStatus();
 
         defineHttpResponseBody();
 
         defineTransitionLinks();
 
-        return this.responseBuilder.build();
+        return this.suttonResponse.build();
     }
 
     private void defineResponseStatus() {
-        this.responseBuilder.status(Response.Status.NO_CONTENT);
+        this.suttonResponse.status(Status.NO_CONTENT);
     }
 
     private void defineHttpResponseBody() {
-        this.responseBuilder.entity(this.modelToDelete.getResult());
+        this.suttonResponse.entity(null);
     }
 
     /**
@@ -130,13 +128,13 @@ public abstract class AbstractDeleteState<T extends AbstractModel> extends Abstr
      */
     protected abstract void defineTransitionLinks();
 
-    public static abstract class AbstractDeleteStateBuilder extends AbstractState.AbstractStateBuilder {
+    public static abstract class AbstractDeleteStateBuilder<R> extends AbstractState.AbstractStateBuilder<R, Void> {
         /**
          * id {@link Long} of the model to be searched in the database in order to be deleted
          */
         protected long requestedId;
 
-        public AbstractDeleteStateBuilder setRequestedId(final long requestedId) {
+        public AbstractDeleteStateBuilder<R> setRequestedId(final long requestedId) {
             this.requestedId = requestedId;
             return this;
         }

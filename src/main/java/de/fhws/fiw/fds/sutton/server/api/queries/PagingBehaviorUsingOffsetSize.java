@@ -32,7 +32,7 @@ import java.util.Map;
  * @see PagingBehaviorUsingPage
  * @see OnePageWithAllResults
  */
-public class PagingBehaviorUsingOffsetSize<T extends AbstractModel> extends PagingBehavior<T> {
+public class PagingBehaviorUsingOffsetSize<T extends AbstractModel, R> extends PagingBehavior<T, R> {
 
     /**
      * The default page size {@link Integer} to use when no size is provided
@@ -118,12 +118,12 @@ public class PagingBehaviorUsingOffsetSize<T extends AbstractModel> extends Pagi
     }
 
     @Override
-    protected boolean hasNextLink(final CollectionModelResult<?> result) {
+    protected boolean hasNextLink(final CollectionModelResult<T> result) {
         return this.offset + this.size < result.getTotalNumberOfResult();
     }
 
     @Override
-    protected URI getNextUri(final SuttonUriInfo uriInfo, final CollectionModelResult<?> result) {
+    protected URI getNextUri(final SuttonUriInfo uriInfo, final CollectionModelResult<T> result) {
         final int newOffset = Math.min(this.offset + this.size, result.getTotalNumberOfResult() - 1);
         Map<String, Integer> queryParams = getQueryParamsAsMap(newOffset, this.size);
 

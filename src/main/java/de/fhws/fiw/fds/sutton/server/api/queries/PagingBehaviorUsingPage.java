@@ -16,7 +16,7 @@ import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
  * @see PagingBehaviorUsingOffsetSize
  * @see OnePageWithAllResults
  */
-public class PagingBehaviorUsingPage<T extends AbstractModel> extends PagingBehavior<T> {
+public class PagingBehaviorUsingPage<T extends AbstractModel, R> extends PagingBehavior<T, R> {
 
     /**
      * Default name {@link String} of the page query parameter
@@ -73,7 +73,7 @@ public class PagingBehaviorUsingPage<T extends AbstractModel> extends PagingBeha
     }
 
     @Override
-    protected boolean hasNextLink(final CollectionModelResult<?> result) {
+    protected boolean hasNextLink(final CollectionModelResult<T> result) {
         return this.pageNumber * DEFAULT_PAGE_SIZE < result.getTotalNumberOfResult();
     }
 
@@ -97,7 +97,7 @@ public class PagingBehaviorUsingPage<T extends AbstractModel> extends PagingBeha
     }
 
     @Override
-    protected URI getNextUri(final SuttonUriInfo uriInfo, final CollectionModelResult<?> result) {
+    protected URI getNextUri(final SuttonUriInfo uriInfo, final CollectionModelResult<T> result) {
         Map<String, Integer> queryParamsMap = getQueryParamAsMap(this.pageNumber + 1);
         final String uriTemplate = uriInfo.createURIWithQueryParamTemplates(getPageParamName());
         return uriInfo.getURI(uriTemplate, queryParamsMap);

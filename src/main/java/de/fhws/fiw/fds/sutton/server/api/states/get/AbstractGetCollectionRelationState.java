@@ -12,7 +12,7 @@ import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
  *
  * @see AbstractGetCollectionState
  */
-public abstract class AbstractGetCollectionRelationState<T extends AbstractModel> extends AbstractGetCollectionState<T> {
+public abstract class AbstractGetCollectionRelationState<T extends AbstractModel, R> extends AbstractGetCollectionState<T, R> {
 
     /**
      * id {@link Long} of the main resource
@@ -23,27 +23,27 @@ public abstract class AbstractGetCollectionRelationState<T extends AbstractModel
      * The query {@link AbstractRelationQuery} to be used to fetch sub-resources associated with a primary resource
      * from the database
      */
-    protected AbstractRelationQuery<T> query;
+    protected AbstractRelationQuery<T, R> query;
 
-    public AbstractGetCollectionRelationState(final AbstractGetCollectionRelationStateBuilder builder) {
+    public AbstractGetCollectionRelationState(final AbstractGetCollectionRelationStateBuilder<T, R> builder) {
         super(builder);
         this.primaryId = builder.parentId;
         this.query = builder.query;
         super.query = this.query;
     }
 
-    public static abstract class AbstractGetCollectionRelationStateBuilder<T extends AbstractModel>
-            extends AbstractGetCollectionStateBuilder<T> {
+    public static abstract class AbstractGetCollectionRelationStateBuilder<T extends AbstractModel, R>
+            extends AbstractGetCollectionStateBuilder<T, R> {
         protected long parentId;
 
-        protected AbstractRelationQuery<T> query;
+        protected AbstractRelationQuery<T, R> query;
 
-        public AbstractGetCollectionRelationStateBuilder setParentId(final long parentId) {
+        public AbstractGetCollectionRelationStateBuilder<T, R> setParentId(final long parentId) {
             this.parentId = parentId;
             return this;
         }
 
-        public AbstractGetCollectionRelationStateBuilder setQuery(final AbstractRelationQuery<T> query) {
+        public AbstractGetCollectionRelationStateBuilder<T, R> setQuery(final AbstractRelationQuery<T, R> query) {
             this.query = query;
             return this;
         }

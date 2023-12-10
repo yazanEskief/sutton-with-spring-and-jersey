@@ -16,11 +16,8 @@
 
 package de.fhws.fiw.fds.sutton.server.api.states.get;
 
-import de.fhws.fiw.fds.sutton.server.api.caching.CachingUtils;
 import de.fhws.fiw.fds.sutton.server.api.hyperlinks.Hyperlinks;
 import de.fhws.fiw.fds.sutton.server.api.states.AbstractState;
-
-import jakarta.ws.rs.core.Response;
 
 import java.net.URI;
 
@@ -31,33 +28,34 @@ import java.net.URI;
  * <p>Extending state class has to define a builder class, which must extend
  * * {@link AbstractGetDispatcherState.AbstractDispatcherStateBuilder}.</p>
  */
-public abstract class AbstractGetDispatcherState extends AbstractState {
+public abstract class AbstractGetDispatcherState<R> extends AbstractState<R, Void> {
 
-    protected AbstractGetDispatcherState(final AbstractDispatcherStateBuilder builder) {
+    protected AbstractGetDispatcherState(final AbstractDispatcherStateBuilder<R> builder) {
         super(builder);
     }
 
     @Override
-    protected Response buildInternal() {
+    protected R buildInternal() {
         configureState();
 
         return createResponse();
     }
 
-    protected Response createResponse() {
+    protected R createResponse() {
         defineHttpResponseBody();
 
         defineSelfLink();
 
         defineTransitionLinks();
 
-        this.responseBuilder.cacheControl(CachingUtils.create60SecondsPublicCaching());
+//        TODO: implement SuttonCacheControl
+//        this.suttonResponseBuilder.cacheControl(CachingUtils.create60SecondsPublicCaching());
 
-        return this.responseBuilder.build();
+        return this.suttonResponse.build();
     }
 
     private void defineHttpResponseBody() {
-        this.responseBuilder.entity("");
+        this.suttonResponse.entity(null);
     }
 
     /**
@@ -69,10 +67,10 @@ public abstract class AbstractGetDispatcherState extends AbstractState {
     protected void defineSelfLink() {
         final URI self = this.uriInfo.getURI();
 
-        Hyperlinks.addLink(this.responseBuilder, self, "self", getAcceptRequestHeader());
+        Hyperlinks.addLink(this.suttonResponse, self, "self", getAcceptRequestHeader());
     }
 
-    public abstract static class AbstractDispatcherStateBuilder extends AbstractStateBuilder {
+    public abstract static class AbstractDispatcherStateBuilder<R> extends AbstractStateBuilder<R, Void> {
 
     }
 

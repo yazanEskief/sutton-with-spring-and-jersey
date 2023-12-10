@@ -6,9 +6,9 @@ import de.fhws.fiw.fds.sutton.server.database.results.NoContentResult;
 import de.fhws.fiw.fds.suttondemoHibernate.server.DaoFactory;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Location;
 
-public class PostNewLocationOfPerson extends AbstractPostRelationState<Location> {
+public class PostNewLocationOfPerson<R> extends AbstractPostRelationState<Location, R> {
 
-    public PostNewLocationOfPerson( final Builder builder )
+    public PostNewLocationOfPerson( final Builder<R> builder )
     {
         super( builder );
     }
@@ -28,11 +28,11 @@ public class PostNewLocationOfPerson extends AbstractPostRelationState<Location>
 
     }
 
-    public static class Builder extends AbstractPostRelationStateBuilder<Location>
+    public static class Builder<R> extends AbstractPostRelationStateBuilder<Location, R>
     {
-        @Override public AbstractState build( )
+        @Override public AbstractState<R, Void> build( )
         {
-            return new PostNewLocationOfPerson( this );
+            return new PostNewLocationOfPerson<>( this );
         }
     }
 

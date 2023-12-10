@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import de.fhws.fiw.fds.sutton.server.api.converter.JacksonConfig;
-import de.fhws.fiw.fds.sutton.server.api.rateLimiting.service.RateLimiterService;
+import de.fhws.fiw.fds.sutton.server.api.rateLimiting.service.RateLimiterJerseyService;
 //import org.apache.catalina.filters.CorsFilter;
 //import org.apache.catalina.loader.ParallelWebappClassLoader;
 import org.glassfish.jersey.jackson.JacksonFeature;
@@ -31,10 +31,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public abstract class AbstractApplication extends ResourceConfig {
+public abstract class AbstractJerseyApplication extends ResourceConfig {
 
     @Autowired
-    protected AbstractApplication() {
+    protected AbstractJerseyApplication() {
         super();
         registerClasses(getDefaultAndSpecificServiceClasses());
         packages("org.glassfish.jersey.examples.linking");
@@ -66,7 +66,7 @@ public abstract class AbstractApplication extends ResourceConfig {
 
         Set<Class<?>> allServiceClasses = new HashSet<>(getServiceClasses());
 
-        allServiceClasses.add(RateLimiterService.class);
+        allServiceClasses.add(RateLimiterJerseyService.class);
 
         return allServiceClasses;
     }

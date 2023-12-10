@@ -23,9 +23,9 @@ import de.fhws.fiw.fds.sutton.server.database.results.SingleModelResult;
 import de.fhws.fiw.fds.suttondemoHibernate.server.DaoFactory;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Person;
 
-public class PutSinglePerson extends AbstractPutState<Person> {
+public class PutSinglePerson<R> extends AbstractPutState<Person, R> {
 
-    public PutSinglePerson(final Builder builder) {
+    public PutSinglePerson(final Builder<R> builder) {
         super(builder);
     }
 
@@ -49,10 +49,10 @@ public class PutSinglePerson extends AbstractPutState<Person> {
                 this.modelToUpdate.getId());
     }
 
-    public static class Builder extends AbstractPutStateBuilder<Person> {
+    public static class Builder<R> extends AbstractPutStateBuilder<Person, R> {
         @Override
-        public AbstractState build() {
-            return new PutSinglePerson(this);
+        public AbstractState<R, Void> build() {
+            return new PutSinglePerson<>(this);
         }
     }
 }

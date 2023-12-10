@@ -26,7 +26,7 @@ public class Start extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(SuttonDemoApplication.class);
+        return application.sources(SuttonDemoJerseyApplication.class);
     }
 
     public static void main(String[] args) {
@@ -36,4 +36,9 @@ public class Start extends SpringBootServletInitializer {
         new DatabaseInstaller().install();
     }
 
+//    public static void main(String[] args) {
+//        SpringApplication.run(Start.class, args);
+//
+//        new DatabaseInstaller().install();
+//    }
 }

@@ -11,22 +11,22 @@ import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
  *
  * @see AbstractGetState
  */
-public abstract class AbstractGetRelationState<T extends AbstractModel> extends AbstractGetState<T> {
+public abstract class AbstractGetRelationState<T extends AbstractModel, R> extends AbstractGetState<T, R> {
 
     /**
      * id {@link Long} of the primary resource
      */
     protected long primaryId;
 
-    public AbstractGetRelationState(final AbstractGetRelationStateBuilder builder) {
+    public AbstractGetRelationState(final AbstractGetRelationStateBuilder<R, T> builder) {
         super(builder);
         this.primaryId = builder.parentId;
     }
 
-    public static abstract class AbstractGetRelationStateBuilder extends AbstractGetStateBuilder {
+    public static abstract class AbstractGetRelationStateBuilder<R, T extends AbstractModel> extends AbstractGetStateBuilder<R, T> {
         protected long parentId;
 
-        public AbstractGetStateBuilder setParentId(final long parentId) {
+        public AbstractGetStateBuilder<R, T> setParentId(final long parentId) {
             this.parentId = parentId;
             return this;
         }

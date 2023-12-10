@@ -9,7 +9,7 @@ import de.fhws.fiw.fds.suttondemoHibernate.server.DaoFactory;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Location;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Person;
 
-public class QueryByLocationName extends AbstractRelationQuery<Location> {
+public class QueryByLocationName<R> extends AbstractRelationQuery<Location, R> {
 
     private String cityName;
 
@@ -19,7 +19,7 @@ public class QueryByLocationName extends AbstractRelationQuery<Location> {
         super(primaryId);
         this.cityName = cityName;
         this.waitingTime = waitingTime;
-        this.pagingBehavior = new PagingBehaviorUsingOffsetSize<Person>(offset, size);
+        this.pagingBehavior = new PagingBehaviorUsingOffsetSize<>(offset, size);
     }
 
     public String getCityName() {

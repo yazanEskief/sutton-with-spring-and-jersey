@@ -18,20 +18,19 @@ package de.fhws.fiw.fds.sutton.server.api.states;
 
 import de.fhws.fiw.fds.sutton.server.api.hyperlinks.Hyperlinks;
 import de.fhws.fiw.fds.sutton.server.api.rateLimiting.RateLimiter;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.Exceptions.SuttonWebAppException;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.ServletRequestAdapter.SuttonServletRequest;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.requestAdapter.SuttonRequest;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.responseAdapter.Status;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.responseAdapter.SuttonResponse;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.SuttonUriInfo;
-import jakarta.ws.rs.WebApplicationException;
-import jakarta.ws.rs.core.Request;
-import jakarta.ws.rs.core.Response;
-
 
 /**
  * <p>The AbstractState class defines the basic requirements each extending state class needs to define a proper workflow.</p>
  *
  * <p>Each extending state class has to define a builder class, which must extend {@link AbstractState.AbstractStateBuilder}.</p>
  */
-public abstract class AbstractState {
+public abstract class AbstractState<R, T> {
 
     protected SuttonUriInfo uriInfo;
 
@@ -39,19 +38,19 @@ public abstract class AbstractState {
 
     protected SuttonRequest suttonRequest;
 
-    protected Response.ResponseBuilder responseBuilder;
+    protected SuttonResponse<R, T> suttonResponse;
 
     private RateLimiter rateLimiter;
 
     /**
      * This constructor instantiates an instance of the AbstractState class using the builder pattern
      */
-    protected AbstractState(final AbstractStateBuilder builder) {
+    protected AbstractState(final AbstractStateBuilder<R, T> builder) {
         this.uriInfo = builder.uriInfo;
         this.suttonServletRequest = builder.suttonServletRequest;
         this.suttonRequest = builder.SuttonRequest;
         this.rateLimiter = builder.rateLimiter != null ? builder.rateLimiter : RateLimiter.DEFAULT;
-        this.responseBuilder = Response.ok();
+        this.suttonResponse = builder.suttonResponse;
     }
 
     /**
@@ -59,16 +58,16 @@ public abstract class AbstractState {
      *
      * @return the response sent back to the client
      */
-    public final Response execute() {
+    public final R execute() throws SuttonWebAppException {
         try {
             return buildInternalWithRateLimiter();
-        } catch (final WebApplicationException f) {
-            throw f;
+        } catch (SuttonWebAppException e) {
+            e.printStackTrace();
+            throw e;
         } catch (final Exception e) {
             e.printStackTrace();
 
-            return this.responseBuilder.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .build();
+            return this.suttonResponse.status(Status.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -77,14 +76,12 @@ public abstract class AbstractState {
      *
      * @return the response sent back to the client
      */
-    private Response buildInternalWithRateLimiter() {
+    private R buildInternalWithRateLimiter() {
         String apiKey = getApiKeyFromRequest();
         if (rateLimiter.isRequestAllowed(apiKey)) {
             return buildInternal();
         } else {
-            throw new WebApplicationException(Response.status(Response.Status.TOO_MANY_REQUESTS)
-                    .entity("Rate limit exceeded for API key: " + apiKey)
-                    .build());
+            throw new SuttonWebAppException(Status.TOO_MANY_REQUESTS, "Rate limit exceeded for API key: " + apiKey);
         }
     }
 
@@ -102,7 +99,7 @@ public abstract class AbstractState {
      *
      * @return the response sent back to the client
      */
-    protected abstract Response buildInternal();
+    protected abstract R buildInternal();
 
     /**
      * This method can be used to configure the state. If extended classes implement the work flow
@@ -126,7 +123,7 @@ public abstract class AbstractState {
                                  final String relType,
                                  final String mediaType,
                                  final Object... params) {
-        Hyperlinks.addLink(this.uriInfo, this.responseBuilder, uriTemplate, relType, mediaType, params);
+        Hyperlinks.addLink(this.uriInfo, this.suttonResponse, uriTemplate, relType, mediaType, params);
     }
 
 
@@ -139,7 +136,7 @@ public abstract class AbstractState {
      * @param params      an ellipsis of {@link Object} to be built to the href part of the hyperlink
      */
     protected final void addLink(final String uriTemplate, final String relType, final Object... params) {
-        Hyperlinks.addLink(this.uriInfo, this.responseBuilder, uriTemplate, relType, null, params);
+        Hyperlinks.addLink(this.uriInfo, this.suttonResponse, uriTemplate, relType, null, params);
     }
 
     /**
@@ -163,7 +160,7 @@ public abstract class AbstractState {
      * this inner static abstract class is used in the context of the builder pattern in order to
      * instantiate state classes
      */
-    public static abstract class AbstractStateBuilder {
+    public static abstract class AbstractStateBuilder<R, T> {
         protected SuttonUriInfo uriInfo;
 
         protected SuttonServletRequest suttonServletRequest;
@@ -172,30 +169,37 @@ public abstract class AbstractState {
 
         protected RateLimiter rateLimiter;
 
-        public AbstractStateBuilder setUriInfo(final SuttonUriInfo uriInfo) {
+        protected SuttonResponse<R, T> suttonResponse;
+
+        public AbstractStateBuilder<R, T> setUriInfo(final SuttonUriInfo uriInfo) {
             this.uriInfo = uriInfo;
             return this;
         }
 
-        public AbstractStateBuilder setSuttonServletRequest(final SuttonServletRequest suttonServletRequest) {
+        public AbstractStateBuilder<R, T>  setSuttonServletRequest(final SuttonServletRequest suttonServletRequest) {
             this.suttonServletRequest = suttonServletRequest;
             return this;
         }
 
-        public AbstractStateBuilder setSuttonRequest(final SuttonRequest suttonRequest) {
+        public AbstractStateBuilder<R, T>  setSuttonRequest(final SuttonRequest suttonRequest) {
             this.SuttonRequest = suttonRequest;
             return this;
         }
 
-        public AbstractStateBuilder setRateLimiter(final RateLimiter rateLimiter) {
+        public AbstractStateBuilder<R, T>  setRateLimiter(final RateLimiter rateLimiter) {
             this.rateLimiter = rateLimiter;
+            return this;
+        }
+
+        public AbstractStateBuilder<R, T>  setSuttonResponse(final SuttonResponse<R, T> suttonResponse) {
+            this.suttonResponse = suttonResponse;
             return this;
         }
 
         /**
          * This method is used to return a state class, which extends {@link AbstractState}
          */
-        public abstract AbstractState build();
+        public abstract AbstractState<R, T> build();
     }
 
 }

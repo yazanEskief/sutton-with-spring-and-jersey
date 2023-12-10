@@ -5,18 +5,17 @@ import de.fhws.fiw.fds.sutton.server.api.states.get.AbstractGetCollectionRelatio
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Location;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.queries.QueryByLocationName;
 
-import jakarta.ws.rs.core.GenericEntity;
 import java.util.Collection;
 
 
-public class GetAllLocationsOfPerson extends AbstractGetCollectionRelationState<Location> {
-    public GetAllLocationsOfPerson(final Builder builder) {
+public class GetAllLocationsOfPerson<R> extends AbstractGetCollectionRelationState<Location, R> {
+    public GetAllLocationsOfPerson(final Builder<R> builder) {
         super(builder);
     }
 
     @Override
     protected void authorizeRequest() {
-        QueryByLocationName theQuery = (QueryByLocationName) this.query;
+        QueryByLocationName<R> theQuery = (QueryByLocationName<R>) this.query;
         int waitingTime = theQuery.getWaitingTime();
 
         try {
@@ -28,8 +27,7 @@ public class GetAllLocationsOfPerson extends AbstractGetCollectionRelationState<
 
     @Override
     protected void defineHttpResponseBody() {
-        this.responseBuilder.entity(new GenericEntity<Collection<Location>>(this.result.getResult()) {
-        });
+        this.suttonResponse.entity(this.result.getResult());
     }
 
     @Override
@@ -47,10 +45,10 @@ public class GetAllLocationsOfPerson extends AbstractGetCollectionRelationState<
 
     }
 
-    public static class Builder extends AbstractGetCollectionRelationStateBuilder<Location> {
+    public static class Builder<R> extends AbstractGetCollectionRelationStateBuilder<Location, R> {
         @Override
-        public AbstractState build() {
-            return new GetAllLocationsOfPerson(this);
+        public AbstractState<R, Collection<Location>> build() {
+            return new GetAllLocationsOfPerson<R>(this);
         }
     }
 }

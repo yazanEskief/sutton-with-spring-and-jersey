@@ -16,6 +16,7 @@
 
 package de.fhws.fiw.fds.sutton.server.api.hyperlinks;
 
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.responseAdapter.SuttonResponse;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.SuttonUriInfo;
 import jakarta.ws.rs.core.Response;
 
@@ -32,42 +33,26 @@ public class Hyperlinks {
      * headers
      *
      * @param uriInfo         the {@link SuttonUriInfo} to derive the required path information from
-     * @param responseBuilder the {@link Response.ResponseBuilder} to add the created hyperlink to as a header
+     * @param suttonResponse the {@link SuttonResponse} to add the created hyperlink to as a header
      * @param mediaType       {@link String} the media type in which the data will be sent when this link is requested
      * @param relationType    {@link String} describes what the hyperlink stands for
      * @param path            {@link String} the relative path to use it to build the href for the hyperlink
      * @param params          an ellipsis of {@link Object} to be built to the href part of the hyperlink
      */
-    public static void addLink(final SuttonUriInfo uriInfo,
-                               final Response.ResponseBuilder responseBuilder,
-                               final String path,
-                               final String relationType,
-                               final String mediaType,
-                               final Object... params) {
+    public static <R, T> void addLink(final SuttonUriInfo uriInfo,
+                                      final SuttonResponse<R, T> suttonResponse,
+                                      final String path,
+                                      final String relationType,
+                                      final String mediaType,
+                                      final Object... params) {
         String uriTemplate = uriInfo.getUriTemplate(path);
 
         for (final Object p : params) {
             uriTemplate = replaceFirstTemplate(uriTemplate, p);
         }
 
-        responseBuilder.header("Link", linkHeader(uriTemplate, relationType, mediaType));
+        suttonResponse.header("Link", linkHeader(uriTemplate, relationType, mediaType));
     }
-
-//    private static String beforeQuestionMark(final String path) {
-//        if (path.contains("?")) {
-//            return path.substring(0, path.indexOf("?"));
-//        } else {
-//            return path;
-//        }
-//    }
-//
-//    private static String afterQuestionMark(final String path) {
-//        if (path.contains("?")) {
-//            return path.substring(path.indexOf("?") + 1);
-//        } else {
-//            return "";
-//        }
-//    }
 
     public static String replaceFirstTemplate(final String uri, final Object value) {
         return uri.replaceFirst("\\{id\\}", value.toString());
@@ -94,10 +79,10 @@ public class Hyperlinks {
      * @param mediaType       {@link String} the media type in which the data will be sent when this link is requested
      * @param relType         {@link String} describes what the hyperlink stands for
      */
-    public static void addLink(final Response.ResponseBuilder responseBuilder,
-                               final URI uri,
-                               final String relType,
-                               final String mediaType) {
+    public static <R, T> void addLink(final SuttonResponse<R, T> responseBuilder,
+                                      final URI uri,
+                                      final String relType,
+                                      final String mediaType) {
         responseBuilder.header("Link", linkHeader(uri.toASCIIString(), relType, mediaType));
     }
 

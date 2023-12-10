@@ -9,12 +9,10 @@ import de.fhws.fiw.fds.sutton.server.database.results.CollectionModelResult;
 import de.fhws.fiw.fds.suttondemoHibernate.server.DaoFactory;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Location;
 
-import jakarta.ws.rs.core.GenericEntity;
-
 import java.util.Collection;
 
-public class GetAllLocations extends AbstractGetCollectionState<Location> {
-    public GetAllLocations(final Builder builder) {
+public class GetAllLocations<R> extends AbstractGetCollectionState<Location, R> {
+    public GetAllLocations(final Builder<R> builder) {
         super(builder);
     }
 
@@ -24,8 +22,7 @@ public class GetAllLocations extends AbstractGetCollectionState<Location> {
     }
 
     protected void defineHttpResponseBody() {
-        this.responseBuilder.entity(new GenericEntity<Collection<Location>>(this.result.getResult()) {
-        });
+        this.suttonResponse.entity(this.result.getResult());
     }
 
     @Override
@@ -33,17 +30,17 @@ public class GetAllLocations extends AbstractGetCollectionState<Location> {
         addLink(LocationUri.REL_PATH, LocationRelTypes.CREATE_LOCATION, getAcceptRequestHeader());
     }
 
-    public static class AllLocations extends AbstractQuery<Location> {
+    public static class AllLocations<R> extends AbstractQuery<Location, R> {
         @Override
         protected CollectionModelResult<Location> doExecuteQuery(SearchParameter searchParameter) throws DatabaseException {
             return DaoFactory.getInstance().getLocationDao().readAll();
         }
     }
 
-    public static class Builder extends AbstractGetCollectionStateBuilder<Location> {
+    public static class Builder<R> extends AbstractGetCollectionStateBuilder<Location, R> {
         @Override
-        public AbstractState build() {
-            return new GetAllLocations(this);
+        public AbstractState<R, Collection<Location>> build() {
+            return new GetAllLocations<>(this);
         }
     }
 }

@@ -6,7 +6,7 @@ import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
  * The AbstractRelationQuery extends the functionality of the {@link AbstractQuery} in order to fetch associated
  * data from the database
  */
-public abstract class AbstractRelationQuery<T extends AbstractModel> extends AbstractQuery<T> {
+public abstract class AbstractRelationQuery<T extends AbstractModel, R> extends AbstractQuery<T, R> {
 
     protected long primaryId;
 
@@ -14,7 +14,7 @@ public abstract class AbstractRelationQuery<T extends AbstractModel> extends Abs
         this.primaryId = primaryId;
     }
 
-    public AbstractRelationQuery setPagingBehavior(final PagingBehavior pagingBehavior) {
+    public AbstractRelationQuery<T, R> setPagingBehavior(final PagingBehavior<T, R> pagingBehavior) {
         super.setPagingBehavior(pagingBehavior);
         return this;
     }

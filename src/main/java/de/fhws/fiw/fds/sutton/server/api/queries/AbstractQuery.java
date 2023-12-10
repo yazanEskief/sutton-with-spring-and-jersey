@@ -21,13 +21,14 @@ import de.fhws.fiw.fds.sutton.server.database.SearchParameter;
 import de.fhws.fiw.fds.sutton.server.database.results.CollectionModelResult;
 import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
 
+import java.util.Collection;
 import java.util.function.Predicate;
 
 /**
  * the AbstractQuery class is used to set the paging behavior to be used, when the amount of the requested resources
  * is too big to be returned in a single response. The AbstractQuery class sets also the paging links accordingly
  */
-public abstract class AbstractQuery<T extends AbstractModel> {
+public abstract class AbstractQuery<T extends AbstractModel, R> {
 
     /**
      * The resulting data {@link CollectionModelResult} from querying the storage to be returned to the client
@@ -37,7 +38,7 @@ public abstract class AbstractQuery<T extends AbstractModel> {
     /**
      * The paging behavior {@link PagingBehavior}  through which the resulting data should be organized and sent back to the client in the response
      */
-    protected PagingBehavior pagingBehavior = new OnePageWithAllResults();
+    protected PagingBehavior<T, R> pagingBehavior = new OnePageWithAllResults<>();
 
     /**
      * Default constructor to instantiate an AbstractQuery
@@ -51,7 +52,7 @@ public abstract class AbstractQuery<T extends AbstractModel> {
      * @param pagingBehavior - {@link PagingBehavior} the paging behavior to be used
      * @return the same AbstractQuery object, on which the method was called
      */
-    public AbstractQuery setPagingBehavior(final PagingBehavior pagingBehavior) {
+    public AbstractQuery<T, R> setPagingBehavior(final PagingBehavior<T, R> pagingBehavior) {
         this.pagingBehavior = pagingBehavior;
         return this;
     }
@@ -93,15 +94,15 @@ public abstract class AbstractQuery<T extends AbstractModel> {
     protected abstract CollectionModelResult<T> doExecuteQuery(SearchParameter searchParameter)
             throws DatabaseException;
 
-    public final void addSelfLink(final PagingContext pagingContext) {
+    public final void addSelfLink(final PagingContext<R, Collection<T>> pagingContext) {
         this.pagingBehavior.addSelfLink(pagingContext);
     }
 
-    public final void addPrevPageLink(final PagingContext pagingContext) {
+    public final void addPrevPageLink(final PagingContext<R, Collection<T>> pagingContext) {
         this.pagingBehavior.addPrevPageLink(pagingContext);
     }
 
-    public final void addNextPageLink(final PagingContext pagingContext) {
+    public final void addNextPageLink(final PagingContext<R, Collection<T>> pagingContext) {
         this.pagingBehavior.addNextPageLink(pagingContext, this.result);
     }
 

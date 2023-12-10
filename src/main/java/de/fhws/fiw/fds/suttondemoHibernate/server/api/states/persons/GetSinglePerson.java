@@ -24,9 +24,9 @@ import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Person;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.states.person_locations.PersonLocationRelTypes;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.states.person_locations.PersonLocationUri;
 
-public class GetSinglePerson extends AbstractGetState<Person> {
+public class GetSinglePerson<R> extends AbstractGetState<Person, R> {
 
-    public GetSinglePerson(final AbstractGetState.AbstractGetStateBuilder builder) {
+    public GetSinglePerson(final Builder<R> builder) {
         super(builder);
     }
 
@@ -49,10 +49,10 @@ public class GetSinglePerson extends AbstractGetState<Person> {
                 this.requestedId );
     }
 
-    public static class Builder extends AbstractGetStateBuilder {
+    public static class Builder<R> extends AbstractGetStateBuilder<R, Person> {
         @Override
-        public AbstractState build() {
-            return new GetSinglePerson(this);
+        public AbstractState<R, Person> build() {
+            return new GetSinglePerson<>(this);
         }
     }
 }

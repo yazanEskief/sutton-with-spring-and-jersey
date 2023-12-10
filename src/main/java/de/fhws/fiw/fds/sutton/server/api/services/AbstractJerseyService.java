@@ -22,7 +22,7 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Request;
 import jakarta.ws.rs.core.UriInfo;
 
-public class AbstractService {
+public class AbstractJerseyService {
 
     @Context
     protected UriInfo uriInfo;

@@ -16,23 +16,23 @@
 
 package de.fhws.fiw.fds.sutton.server.api.queries;
 
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.responseAdapter.SuttonResponse;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.SuttonUriInfo;
-import jakarta.ws.rs.core.Response;
 
 /**
  * The PagingContext provides the essential requirements to create a paging context in the response to make it clear
  * for the client to navigate through the available pages according to the hyperlinks principle of the REST architecture
  */
-public class PagingContext {
+public class PagingContext<R, T> {
 
     private final SuttonUriInfo uriInfo;
 
-    private final Response.ResponseBuilder responseBuilder;
+    private final SuttonResponse<R, T> responseBuilder;
 
     private final String mediaType;
 
     public PagingContext(final SuttonUriInfo uriInfo,
-                         final Response.ResponseBuilder responseBuilder,
+                         final SuttonResponse<R, T> responseBuilder,
                          final String mediaType) {
         this.uriInfo = uriInfo;
         this.responseBuilder = responseBuilder;
@@ -43,7 +43,7 @@ public class PagingContext {
         return this.uriInfo;
     }
 
-    public Response.ResponseBuilder getResponseBuilder() {
+    public SuttonResponse<R, T> getResponseBuilder() {
         return this.responseBuilder;
     }
 

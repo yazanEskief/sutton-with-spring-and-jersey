@@ -9,9 +9,9 @@ import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Location;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.states.persons.PersonRelTypes;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.states.persons.PersonUri;
 
-public class DeleteSingleLocation extends AbstractDeleteState<Location> {
+public class DeleteSingleLocation<R> extends AbstractDeleteState<Location, R> {
 
-    public DeleteSingleLocation( final Builder builder )
+    public DeleteSingleLocation( final Builder<R> builder )
     {
         super( builder );
     }
@@ -37,11 +37,11 @@ public class DeleteSingleLocation extends AbstractDeleteState<Location> {
         addLink( PersonUri.REL_PATH, PersonRelTypes.GET_ALL_PERSONS, getAcceptRequestHeader( ) );
     }
 
-    public static class Builder extends AbstractDeleteStateBuilder
+    public static class Builder<R> extends AbstractDeleteStateBuilder<R>
     {
-        @Override public AbstractState build( )
+        @Override public AbstractState<R, Void> build( )
         {
-            return new DeleteSingleLocation( this );
+            return new DeleteSingleLocation<>( this );
         }
     }
 

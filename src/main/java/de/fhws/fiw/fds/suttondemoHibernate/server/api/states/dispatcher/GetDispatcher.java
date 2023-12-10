@@ -18,9 +18,9 @@ import de.fhws.fiw.fds.sutton.server.api.states.get.AbstractGetDispatcherState;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.states.persons.PersonRelTypes;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.states.persons.PersonUri;
 
-public class GetDispatcher extends AbstractGetDispatcherState {
+public class GetDispatcher<R> extends AbstractGetDispatcherState<R> {
 
-    public GetDispatcher(Builder builder) {
+    public GetDispatcher(Builder<R> builder) {
         super(builder);
     }
 
@@ -29,10 +29,10 @@ public class GetDispatcher extends AbstractGetDispatcherState {
         addLink(PersonUri.REL_PATH, PersonRelTypes.GET_ALL_PERSONS, getAcceptRequestHeader());
     }
 
-    public static class Builder extends AbstractDispatcherStateBuilder {
+    public static class Builder<R> extends AbstractDispatcherStateBuilder<R> {
         @Override
-        public GetDispatcher build() {
-            return new GetDispatcher(this);
+        public GetDispatcher<R> build() {
+            return new GetDispatcher<>(this);
         }
     }
 }

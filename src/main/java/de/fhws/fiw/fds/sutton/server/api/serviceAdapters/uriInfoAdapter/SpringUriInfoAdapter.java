@@ -2,9 +2,11 @@ package de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter;
 
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,13 +22,14 @@ public class SpringUriInfoAdapter implements SuttonUriInfo {
     @Override
     public String getUriTemplate(final String path) {
         UriComponentsBuilder clone = uriComponentsBuilder.cloneBuilder();
-        clone.replacePath(beforeQuestionMark(path));
+        clone.path(beforeQuestionMark(path));
         clone.replaceQuery(afterQuestionMark(path));
-        return clone.toUriString();
+        return clone.build().toUriString();
     }
 
     @Override
     public URI getURI() {
+        System.out.println("-".repeat(20) + this.uriComponentsBuilder.toUriString());
         return this.uriComponentsBuilder.build().toUri();
     }
 

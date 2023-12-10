@@ -12,22 +12,22 @@ import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
  *
  * @see AbstractPutState
  */
-public abstract class AbstractPutRelationState<T extends AbstractModel> extends AbstractPutState<T> {
+public abstract class AbstractPutRelationState<T extends AbstractModel, R> extends AbstractPutState<T, R> {
     /**
      * The id {@link Long} of the primary resource
      */
     protected long primaryId;
 
-    public AbstractPutRelationState(final AbstractPutRelationStateBuilder builder) {
+    public AbstractPutRelationState(final AbstractPutRelationStateBuilder<T, R> builder) {
         super(builder);
         this.primaryId = builder.parentId;
     }
 
-    public static abstract class AbstractPutRelationStateBuilder<T extends AbstractModel>
-            extends AbstractPutStateBuilder<T> {
+    public static abstract class AbstractPutRelationStateBuilder<T extends AbstractModel, R>
+            extends AbstractPutStateBuilder<T, R> {
         protected long parentId;
 
-        public AbstractPutRelationStateBuilder setParentId(final long parentId) {
+        public AbstractPutRelationStateBuilder<T, R> setParentId(final long parentId) {
             this.parentId = parentId;
             return this;
         }

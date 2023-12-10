@@ -1,9 +1,10 @@
-package de.fhws.fiw.fds.suttondemoHibernate.server.api.services;
+package de.fhws.fiw.fds.suttondemoHibernate.server.api.services.jerseyServices;
 
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.ServletRequestAdapter.JerseyServletRequest;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.requestAdapter.JerseyRequest;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.responseAdapter.JerseyResponse;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.uriInfoAdapter.JerseyUriInfoAdapter;
-import de.fhws.fiw.fds.sutton.server.api.services.AbstractService;
+import de.fhws.fiw.fds.sutton.server.api.services.AbstractJerseyService;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.states.dispatcher.GetDispatcher;
 import de.fhws.fiw.fds.suttondemoHibernate.server.database.utils.InitializeDatabase;
 import de.fhws.fiw.fds.suttondemoHibernate.server.database.utils.ResetDatabase;
@@ -17,11 +18,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Path("")
-public class DispatcherService extends AbstractService {
+public class DispatcherJerseyService extends AbstractJerseyService {
 
     @GET
     public Response getDispatcher() {
-        return new GetDispatcher.Builder().setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
+        return new GetDispatcher.Builder<Response>().setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
+                .setSuttonResponse(new JerseyResponse<>())
                 .setSuttonRequest(new JerseyRequest(this.request))
                 .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
                 .build()

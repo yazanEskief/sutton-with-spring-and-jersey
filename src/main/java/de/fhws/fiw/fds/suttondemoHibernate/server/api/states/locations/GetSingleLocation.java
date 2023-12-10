@@ -7,9 +7,9 @@ import de.fhws.fiw.fds.suttondemoHibernate.server.DaoFactory;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.models.Location;
 import de.fhws.fiw.fds.suttondemoHibernate.server.api.states.persons.PersonUri;
 
-public class GetSingleLocation extends AbstractGetState<Location> {
+public class GetSingleLocation<R> extends AbstractGetState<Location, R> {
 
-    public GetSingleLocation( final Builder builder )
+    public GetSingleLocation( final Builder<R> builder )
     {
         super( builder );
     }
@@ -32,11 +32,11 @@ public class GetSingleLocation extends AbstractGetState<Location> {
                 this.requestedId );
     }
 
-    public static class Builder extends AbstractGetStateBuilder
+    public static class Builder<R> extends AbstractGetStateBuilder<R, Location>
     {
-        @Override public AbstractState build( )
+        @Override public AbstractState<R, Location> build( )
         {
-            return new GetSingleLocation( this );
+            return new GetSingleLocation<>( this );
         }
     }
 

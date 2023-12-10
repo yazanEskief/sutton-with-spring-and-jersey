@@ -16,11 +16,11 @@
 
 package de.fhws.fiw.fds.sutton.server.api.states.post;
 
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.responseAdapter.Status;
 import de.fhws.fiw.fds.sutton.server.api.states.AbstractState;
 import de.fhws.fiw.fds.sutton.server.database.results.NoContentResult;
 import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
 
-import jakarta.ws.rs.core.Response;
 import java.net.URI;
 
 /**
@@ -30,7 +30,7 @@ import java.net.URI;
  * <p>Each extending state class has to define a builder class, which must extend
  * {@link AbstractPostState.AbstractPostStateBuilder}</p>
  */
-public abstract class AbstractPostState<T extends AbstractModel> extends AbstractState {
+public abstract class AbstractPostState<T extends AbstractModel, R> extends AbstractState<R, Void> {
 
     /**
      * The model {@link AbstractModel} sent in the request to be created
@@ -42,26 +42,25 @@ public abstract class AbstractPostState<T extends AbstractModel> extends Abstrac
      */
     protected NoContentResult resultAfterSave;
 
-    protected AbstractPostState(final AbstractPostStateBuilder<T> builder) {
+    protected AbstractPostState(final AbstractPostStateBuilder<T, R> builder) {
         super(builder);
         this.modelToStore = builder.modelToCreate;
     }
 
     @Override
-    protected Response buildInternal() {
+    protected R buildInternal() {
         configureState();
 
         authorizeRequest();
 
         if (this.modelToStore.getId() != 0) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            return this.suttonResponse.status(Status.BAD_REQUEST).build();
         }
 
         this.resultAfterSave = saveModel();
 
         if (this.resultAfterSave.hasError()) {
-            return Response.serverError()
-                    .build();
+            return this.suttonResponse.status(Status.INTERNAL_SERVER_ERROR).build();
         }
 
         return createResponse();
@@ -79,12 +78,12 @@ public abstract class AbstractPostState<T extends AbstractModel> extends Abstrac
      */
     protected abstract NoContentResult saveModel();
 
-    protected Response createResponse() {
+    protected R createResponse() {
         defineLocationLink();
 
         defineTransitionLinks();
 
-        return this.responseBuilder.build();
+        return this.suttonResponse.build();
     }
 
     /**
@@ -95,15 +94,15 @@ public abstract class AbstractPostState<T extends AbstractModel> extends Abstrac
 
     protected void defineLocationLink() {
         final URI location = this.uriInfo.appendIdToPath(this.modelToStore.getId());
-        this.responseBuilder.status(Response.Status.CREATED);
-        this.responseBuilder.location(location);
+        this.suttonResponse.status(Status.CREATED);
+        this.suttonResponse.location(location);
     }
 
-    public static abstract class AbstractPostStateBuilder<T extends AbstractModel>
-            extends AbstractState.AbstractStateBuilder {
+    public static abstract class AbstractPostStateBuilder<T extends AbstractModel, R>
+            extends AbstractState.AbstractStateBuilder<R, Void> {
         protected T modelToCreate;
 
-        public AbstractPostStateBuilder setModelToCreate(final T modelToCreate) {
+        public AbstractPostStateBuilder<T, R> setModelToCreate(final T modelToCreate) {
             this.modelToCreate = modelToCreate;
             return this;
         }

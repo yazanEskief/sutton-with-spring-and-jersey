@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class AbstractStateTest {
     @Test
     public void testExecute_buildInternal_is_called_no_exception() throws Exception {
-        final AbstractState stateUnderTest = new DemoStateReturns200Ok();
+        final AbstractState<Response, Void> stateUnderTest = new DemoStateReturns200Ok();
         final Response response = stateUnderTest.execute();
         assertEquals(200, response.getStatus());
     }
@@ -20,14 +20,14 @@ public class AbstractStateTest {
     @Test
     public void testExecute_buildInternal_is_called_web_exception() throws Exception {
         assertThrows(WebApplicationException.class, () -> {
-            final AbstractState stateUnderTest = new DemoStateThrowsWebException();
+            final AbstractState<Response, Void> stateUnderTest = new DemoStateThrowsWebException();
             stateUnderTest.execute();
         });
     }
 
     @Test
     public void testExecute_buildInternal_is_called_illegal_argument_exception() throws Exception {
-        final AbstractState stateUnderTest = new DemoStateThrowsIllegalArgumentException();
+        final AbstractState<Response, Void> stateUnderTest = new DemoStateThrowsIllegalArgumentException();
         final Response response = stateUnderTest.execute();
         assertEquals(500, response.getStatus());
     }

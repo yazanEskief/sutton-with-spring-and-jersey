@@ -20,13 +20,10 @@ import java.util.Set;
 import de.fhws.fiw.fds.sutton.server.api.converter.JacksonConfig;
 import de.fhws.fiw.fds.sutton.server.api.rateLimiting.service.RateLimiterJerseyService;
 //import org.apache.catalina.filters.CorsFilter;
-//import org.apache.catalina.loader.ParallelWebappClassLoader;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.linking.DeclarativeLinkingFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
-//import com.owlike.genson.GensonBuilder;
-//import com.owlike.genson.ext.jaxrs.GensonJaxRSFeature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
@@ -44,8 +41,6 @@ public abstract class AbstractJerseyApplication extends ResourceConfig {
         register(DeclarativeLinkingFeature.class);
         register(MultiPartFeature.class);
 //        register(CorsFilter.class);
-//        register(new GensonJaxRSFeature().use(new GensonBuilder().setSkipNull(true).useFields(false)
-//                .useIndentation(true).create()));
     }
 
     /**
@@ -61,8 +56,6 @@ public abstract class AbstractJerseyApplication extends ResourceConfig {
          * the system class loader as parent but does not use it. Delegation is activated by the following
          * two lines.
          */
-//        ParallelWebappClassLoader classloader = (ParallelWebappClassLoader) this.getClass().getClassLoader();
-//        classloader.setDelegate(true);
 
         Set<Class<?>> allServiceClasses = new HashSet<>(getServiceClasses());
 

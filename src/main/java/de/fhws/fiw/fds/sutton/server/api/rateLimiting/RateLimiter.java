@@ -9,9 +9,6 @@ import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.responseAdapter.Status;
 import de.fhws.fiw.fds.sutton.server.database.SearchParameter;
 import de.fhws.fiw.fds.sutton.server.database.hibernate.IDatabaseConnection;
 
-import jakarta.ws.rs.WebApplicationException;
-import jakarta.ws.rs.core.Response;
-
 import java.util.*;
 
 /**
@@ -39,15 +36,11 @@ public class RateLimiter implements IDatabaseConnection {
      *
      * @param apiKey of {@link APIKey}
      * @return a boolean
-     * @throws WebApplicationException if no {@link APIKey} is present on the DB.
+     * @throws SuttonWebAppException if no {@link APIKey} is present on the DB.
      */
     public boolean isRequestAllowed(String apiKey) {
         APIKey apiKeyOnDB = new ReadAPIKeyOperation(SUTTON_EMF, apiKey).start().getResult();
         if (apiKeyOnDB == null) {
-//            Response errorResponse = Response.status(Response.Status.BAD_REQUEST)
-//                    .entity("API-Key " + apiKey + " not found.")
-//                    .build();
-//            throw new WebApplicationException(errorResponse);
             throw new SuttonWebAppException(Status.BAD_REQUEST, "API-Key " + apiKey + " not found.");
         }
 

@@ -1,8 +1,8 @@
 package suttondemoHibernate.getpersons;
 
-import de.fhws.fiw.fds.suttondemoHibernate.client.models.PersonClientModel;
-import de.fhws.fiw.fds.suttondemoHibernate.client.web.PersonWebClient;
-import de.fhws.fiw.fds.suttondemoHibernate.client.web.PersonWebResponse;
+import de.fhws.fiw.fds.suttondemo.client.models.PersonClientModel;
+import de.fhws.fiw.fds.suttondemo.client.web.PersonWebClient;
+import de.fhws.fiw.fds.suttondemo.client.web.PersonWebResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

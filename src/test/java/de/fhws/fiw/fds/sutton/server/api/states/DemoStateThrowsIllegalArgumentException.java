@@ -3,11 +3,11 @@ package de.fhws.fiw.fds.sutton.server.api.states;
 
 import jakarta.ws.rs.core.Response;
 
-public class DemoStateThrowsIllegalArgumentException extends AbstractState {
+public class DemoStateThrowsIllegalArgumentException extends AbstractState<Response, Void> {
     public DemoStateThrowsIllegalArgumentException() {
-        super(new AbstractStateBuilder() {
+        super(new AbstractStateBuilder<>() {
             @Override
-            public AbstractState build() {
+            public AbstractState<Response, Void> build() {
                 return null;
             }
         });

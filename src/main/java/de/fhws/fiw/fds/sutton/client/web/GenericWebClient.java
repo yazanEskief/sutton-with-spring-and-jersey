@@ -243,8 +243,6 @@ public class GenericWebClient<T extends AbstractClientModel> {
             throws IOException {
         final String data = response.body().string();
 
-        System.out.println(data);
-
         return Optional.ofNullable(objectMapper.readValue(data, clazz));
     }
 }

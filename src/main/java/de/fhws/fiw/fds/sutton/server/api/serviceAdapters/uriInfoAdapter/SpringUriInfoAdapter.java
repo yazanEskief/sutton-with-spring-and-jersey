@@ -22,14 +22,13 @@ public class SpringUriInfoAdapter implements SuttonUriInfo {
     @Override
     public String getUriTemplate(final String path) {
         UriComponentsBuilder clone = uriComponentsBuilder.cloneBuilder();
-        clone.path(beforeQuestionMark(path));
+        clone.replacePath(beforeQuestionMark(path));
         clone.replaceQuery(afterQuestionMark(path));
         return clone.build().toUriString();
     }
 
     @Override
     public URI getURI() {
-        System.out.println("-".repeat(20) + this.uriComponentsBuilder.toUriString());
         return this.uriComponentsBuilder.build().toUri();
     }
 

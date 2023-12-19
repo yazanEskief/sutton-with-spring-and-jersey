@@ -73,7 +73,8 @@ public class PersonJerseyService extends AbstractJerseyService {
                     .build()
                     .execute();
         } catch (SuttonWebAppException e) {
-            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+            throw new WebApplicationException(Response.status(e.getStatus().getCode())
+                    .entity(e.getExceptionMessage()).build());
         }
     }
 
@@ -90,7 +91,8 @@ public class PersonJerseyService extends AbstractJerseyService {
                     .build()
                     .execute();
         } catch (SuttonWebAppException e) {
-            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+            throw new WebApplicationException(Response.status(e.getStatus().getCode())
+                    .entity(e.getExceptionMessage()).build());
         }
     }
 
@@ -109,7 +111,8 @@ public class PersonJerseyService extends AbstractJerseyService {
                     .build()
                     .execute();
         } catch (SuttonWebAppException e) {
-            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+            throw new WebApplicationException(Response.status(e.getStatus().getCode())
+                    .entity(e.getExceptionMessage()).build());
         }
     }
 
@@ -127,7 +130,8 @@ public class PersonJerseyService extends AbstractJerseyService {
                     .build()
                     .execute();
         } catch (SuttonWebAppException e) {
-            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+            throw new WebApplicationException(Response.status(e.getStatus().getCode())
+                    .entity(e.getExceptionMessage()).build());
         }
     }
 
@@ -150,7 +154,8 @@ public class PersonJerseyService extends AbstractJerseyService {
                     .build()
                     .execute();
         } catch (SuttonWebAppException e) {
-            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+            throw new WebApplicationException(Response.status(e.getStatus().getCode())
+                    .entity(e.getExceptionMessage()).build());
         }
     }
 
@@ -170,7 +175,8 @@ public class PersonJerseyService extends AbstractJerseyService {
                     .build()
                     .execute();
         } catch (SuttonWebAppException e) {
-            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+            throw new WebApplicationException(Response.status(e.getStatus().getCode())
+                    .entity(e.getExceptionMessage()).build());
         }
     }
 
@@ -189,7 +195,8 @@ public class PersonJerseyService extends AbstractJerseyService {
                     .build()
                     .execute();
         } catch (SuttonWebAppException e) {
-            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+            throw new WebApplicationException(Response.status(e.getStatus().getCode())
+                    .entity(e.getExceptionMessage()).build());
         }
     }
 
@@ -210,7 +217,8 @@ public class PersonJerseyService extends AbstractJerseyService {
                     .build()
                     .execute();
         } catch (SuttonWebAppException e) {
-            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+            throw new WebApplicationException(Response.status(e.getStatus().getCode())
+                    .entity(e.getExceptionMessage()).build());
         }
     }
 
@@ -229,7 +237,8 @@ public class PersonJerseyService extends AbstractJerseyService {
                     .build()
                     .execute();
         } catch (SuttonWebAppException e) {
-            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+            throw new WebApplicationException(Response.status(e.getStatus().getCode())
+                    .entity(e.getExceptionMessage()).build());
         }
     }
 

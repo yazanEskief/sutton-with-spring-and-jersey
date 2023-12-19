@@ -18,4 +18,9 @@ public class SuttonColumnConstants {
     public final static String API_KEY_RESET_RATE_IN_SCONDS = "resetRateInSeconds";
     public final static String API_KEY_REQUEST_LIMIT = "requestLimit";
 
+    //ColumnConstants for Entity UserDB
+    public final static String USER_NAME = "name";
+    public final static String USER_PASSWORD = "password";
+    public final static String USER_ROLE = "role";
+
 }

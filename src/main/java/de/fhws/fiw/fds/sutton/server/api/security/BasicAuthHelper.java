@@ -1,8 +1,8 @@
 package de.fhws.fiw.fds.sutton.server.api.security;
 
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.Exceptions.NotAuthorizedException;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.HttpHeaders;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.ServletRequestAdapter.SuttonServletRequest;
-import jakarta.ws.rs.NotAuthorizedException;
-import jakarta.ws.rs.core.HttpHeaders;
 import org.apache.commons.codec.binary.Base64;
 
 import java.nio.charset.Charset;

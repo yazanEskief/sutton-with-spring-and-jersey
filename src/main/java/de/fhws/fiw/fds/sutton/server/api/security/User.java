@@ -1,11 +1,16 @@
 package de.fhws.fiw.fds.sutton.server.api.security;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 /**
  * The User class extends {@link AbstractModel} and describes the users who are making the HTTP requests. The user class
  * is used in the context of HTTP security to authenticate clients when making HTTP requests
  */
+@XmlRootElement
+@JsonRootName("user")
 public class User extends AbstractModel {
 
     private String name;
@@ -33,6 +38,7 @@ public class User extends AbstractModel {
         return name;
     }
 
+    @JsonIgnore
     public String getSecret() {
         return secret;
     }

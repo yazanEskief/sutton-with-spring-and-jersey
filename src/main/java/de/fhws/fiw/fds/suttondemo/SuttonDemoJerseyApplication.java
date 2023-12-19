@@ -20,6 +20,7 @@ import de.fhws.fiw.fds.sutton.server.api.AbstractJerseyApplication;
 import de.fhws.fiw.fds.suttondemo.server.api.services.jerseyServices.DispatcherJerseyService;
 import de.fhws.fiw.fds.suttondemo.server.api.services.jerseyServices.LocationJerseyService;
 import de.fhws.fiw.fds.suttondemo.server.api.services.jerseyServices.PersonJerseyService;
+import de.fhws.fiw.fds.suttondemo.server.api.services.jerseyServices.UserJerseyService;
 import jakarta.ws.rs.ApplicationPath;
 import org.springframework.stereotype.Component;
 //import org.apache.catalina.loader.ParallelWebappClassLoader;
@@ -46,6 +47,7 @@ public class SuttonDemoJerseyApplication extends AbstractJerseyApplication {
         returnValue.add(PersonJerseyService.class);
         returnValue.add(LocationJerseyService.class);
         returnValue.add(DispatcherJerseyService.class);
+        returnValue.add(UserJerseyService.class);
 
         return returnValue;
     }

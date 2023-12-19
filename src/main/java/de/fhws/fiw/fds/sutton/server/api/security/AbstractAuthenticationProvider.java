@@ -1,9 +1,9 @@
 package de.fhws.fiw.fds.sutton.server.api.security;
 
 
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.Exceptions.ForbiddenException;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.Exceptions.NotAuthorizedException;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.ServletRequestAdapter.SuttonServletRequest;
-import jakarta.ws.rs.ForbiddenException;
-import jakarta.ws.rs.NotAuthorizedException;
 
 import java.util.Arrays;
 import java.util.Optional;

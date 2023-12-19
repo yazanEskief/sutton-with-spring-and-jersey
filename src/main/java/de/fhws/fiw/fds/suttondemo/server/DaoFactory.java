@@ -18,6 +18,7 @@ package de.fhws.fiw.fds.suttondemo.server;
 import de.fhws.fiw.fds.suttondemo.server.database.hibernate.LocationDaoAdapter;
 import de.fhws.fiw.fds.suttondemo.server.database.hibernate.PersonDaoAdapter;
 import de.fhws.fiw.fds.suttondemo.server.database.hibernate.PersonLocationDaoAdapter;
+import de.fhws.fiw.fds.suttondemo.server.database.hibernate.UserDaoAdapter;
 
 public class DaoFactory {
 
@@ -37,11 +38,14 @@ public class DaoFactory {
 
     private final PersonLocationDao personLocationDao;
 
+    private final UserDao userDao;
+
     private DaoFactory() {
         /* The following line creates the database layer that uses JPA (Hibernate) and the H2 database */
         this.personDao = new PersonDaoAdapter();
         this.locationDao = new LocationDaoAdapter();
         this.personLocationDao = new PersonLocationDaoAdapter();
+        this.userDao = new UserDaoAdapter();
     }
 
     public PersonDao getPersonDao() {
@@ -54,5 +58,9 @@ public class DaoFactory {
 
     public PersonLocationDao getPersonLocationDao() {
         return personLocationDao;
+    }
+
+    public UserDao getUserDao() {
+        return userDao;
     }
 }

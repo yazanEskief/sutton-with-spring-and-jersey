@@ -1,9 +1,12 @@
 package de.fhws.fiw.fds.suttondemo.server.api.states.locations;
 
+import de.fhws.fiw.fds.sutton.server.api.caching.CachingUtils;
+import de.fhws.fiw.fds.sutton.server.api.caching.EtagGenerator;
 import de.fhws.fiw.fds.sutton.server.api.states.AbstractState;
 import de.fhws.fiw.fds.sutton.server.api.states.put.AbstractPutState;
 import de.fhws.fiw.fds.sutton.server.database.results.NoContentResult;
 import de.fhws.fiw.fds.sutton.server.database.results.SingleModelResult;
+import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
 import de.fhws.fiw.fds.suttondemo.server.DaoFactory;
 import de.fhws.fiw.fds.suttondemo.server.api.models.Location;
 
@@ -17,6 +20,17 @@ public class PutSingleLocation<R> extends AbstractPutState<Location, R> {
     @Override
     protected void authorizeRequest() {
 
+    }
+
+    @Override
+    protected boolean clientDoesNotKnowCurrentModelState(AbstractModel modelFromDatabase) {
+        final String modelEtag = EtagGenerator.createEtag(modelFromDatabase);
+        return this.suttonRequest.clientKnowsCurrentModel(modelEtag);
+    }
+
+    @Override
+    protected void defineHttpCaching() {
+        this.suttonResponse.cacheControl(CachingUtils.create30SecondsPublicCaching());
     }
 
     @Override protected SingleModelResult<Location> loadModel( )

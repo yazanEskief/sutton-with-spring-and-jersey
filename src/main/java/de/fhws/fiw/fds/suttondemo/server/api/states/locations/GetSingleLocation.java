@@ -1,8 +1,11 @@
 package de.fhws.fiw.fds.suttondemo.server.api.states.locations;
 
+import de.fhws.fiw.fds.sutton.server.api.caching.CachingUtils;
+import de.fhws.fiw.fds.sutton.server.api.caching.EtagGenerator;
 import de.fhws.fiw.fds.sutton.server.api.states.AbstractState;
 import de.fhws.fiw.fds.sutton.server.api.states.get.AbstractGetState;
 import de.fhws.fiw.fds.sutton.server.database.results.SingleModelResult;
+import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
 import de.fhws.fiw.fds.suttondemo.server.DaoFactory;
 import de.fhws.fiw.fds.suttondemo.server.api.models.Location;
 import de.fhws.fiw.fds.suttondemo.server.api.states.persons.PersonUri;
@@ -22,6 +25,19 @@ public class GetSingleLocation<R> extends AbstractGetState<Location, R> {
     @Override protected SingleModelResult<Location> loadModel( )
     {
         return DaoFactory.getInstance( ).getLocationDao( ).readById( this.requestedId );
+    }
+
+    @Override
+    protected boolean clientKnowsCurrentModelState(AbstractModel modelFromDatabase) {
+        final String eTagOfModel = EtagGenerator.createEtag(modelFromDatabase);
+        return this.suttonRequest.clientKnowsCurrentModel(eTagOfModel);
+    }
+
+    @Override
+    protected void defineHttpCaching() {
+        final String eTagOfModel = EtagGenerator.createEtag(this.requestedModel.getResult());
+        this.suttonResponse.entityTag(eTagOfModel);
+        this.suttonResponse.cacheControl(CachingUtils.create30SecondsPublicCaching());
     }
 
     @Override protected void defineTransitionLinks( )

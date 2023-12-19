@@ -1,6 +1,5 @@
 package de.fhws.fiw.fds.sutton.server.api.caching;
 
-import jakarta.ws.rs.core.EntityTag;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -13,8 +12,8 @@ import java.security.MessageDigest;
  */
 public class EtagGenerator {
 
-    public static EntityTag createEntityTag(final Serializable object) {
-        return new EntityTag(createEtag(object));
+    public static String createEntityTag(final Serializable object) {
+        return createEtag(object);
     }
 
     /**
@@ -57,7 +56,6 @@ public class EtagGenerator {
             r.append(hexCode[(b >> 4) & 0xF]);
             r.append(hexCode[(b & 0xF)]);
         }
-        return "\"" + r + "\"";
+        return r.toString();
     }
-
 }

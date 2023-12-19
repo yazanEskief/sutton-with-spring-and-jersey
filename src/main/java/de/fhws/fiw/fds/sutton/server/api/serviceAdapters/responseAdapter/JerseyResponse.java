@@ -1,7 +1,7 @@
 package de.fhws.fiw.fds.sutton.server.api.serviceAdapters.responseAdapter;
 
-import jakarta.ws.rs.core.GenericEntity;
-import jakarta.ws.rs.core.Response;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.cachingAdapter.SuttonCacheController;
+import jakarta.ws.rs.core.*;
 
 import java.net.URI;
 import java.util.Collection;
@@ -22,6 +22,26 @@ public class JerseyResponse<T> implements SuttonResponse<Response, T> {
     @Override
     public JerseyResponse<T> location(final URI location) {
         this.builder.location(location);
+        return this;
+    }
+
+    @Override
+    public JerseyResponse<T> cacheControl(final SuttonCacheController suttonCacheController) {
+        final CacheControl cacheControl = new CacheControl();
+        cacheControl.setNoCache(suttonCacheController.isNoCacheFlag());
+        cacheControl.setPrivate(suttonCacheController.isPrivateFlag());
+        cacheControl.setNoStore(suttonCacheController.isNoStoreFlag());
+        cacheControl.setNoTransform(suttonCacheController.isNoTransformFlag());
+        cacheControl.setMustRevalidate(suttonCacheController.isMustRevalidateFlag());
+        cacheControl.setProxyRevalidate(suttonCacheController.isProxyRevalidate());
+        cacheControl.setMaxAge(suttonCacheController.getMaxAge());
+        this.builder.cacheControl(cacheControl);
+        return this;
+    }
+
+    @Override
+    public JerseyResponse<T> entityTag(final String entityTag) {
+        this.builder.tag(entityTag);
         return this;
     }
 

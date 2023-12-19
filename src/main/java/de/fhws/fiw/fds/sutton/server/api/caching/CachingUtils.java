@@ -17,7 +17,7 @@
 package de.fhws.fiw.fds.sutton.server.api.caching;
 
 
-import jakarta.ws.rs.core.CacheControl;
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.cachingAdapter.SuttonCacheController;
 
 /**
  * The CachingUtils class is a utility class that provides useful methods to simplify the creation of cache control
@@ -29,12 +29,11 @@ public class CachingUtils {
      * Creates a cache control object, where the returned data are allowed to be saved in public caches and are valid
      * for 2 seconds since they have been sent from the origin server
      *
-     * @return {@link CacheControl}
+     * @return {@link SuttonCacheController}
      */
-    public static CacheControl create2SecondsPublicCaching() {
-        final CacheControl cacheControl = new CacheControl();
-        cacheControl.setPrivate(false);
-        cacheControl.setMaxAge(2);
+    public static SuttonCacheController create2SecondsPublicCaching() {
+        final SuttonCacheController cacheControl = new SuttonCacheController();
+        cacheControl.setPrivate(false).setMaxAge(2);
 
         return cacheControl;
     }
@@ -43,12 +42,11 @@ public class CachingUtils {
      * Creates a cache control object, where the returned data are allowed to be saved in public caches and are valid
      * for 30 seconds since they have been sent from the origin server
      *
-     * @return {@link CacheControl}
+     * @return {@link SuttonCacheController}
      */
-    public static CacheControl create30SecondsPublicCaching() {
-        final CacheControl cacheControl = new CacheControl();
-        cacheControl.setPrivate(false);
-        cacheControl.setMaxAge(30);
+    public static SuttonCacheController create30SecondsPublicCaching() {
+        final SuttonCacheController cacheControl = new SuttonCacheController();
+        cacheControl.setPrivate(false).setMaxAge(30);
 
         return cacheControl;
     }
@@ -57,12 +55,11 @@ public class CachingUtils {
      * Creates a cache control object, where the returned data are allowed to be saved in public caches and are valid
      * for 60 seconds since they have been sent from the origin server
      *
-     * @return {@link CacheControl}
+     * @return {@link SuttonCacheController}
      */
-    public static CacheControl create60SecondsPublicCaching() {
-        final CacheControl cacheControl = new CacheControl();
-        cacheControl.setPrivate(false);
-        cacheControl.setMaxAge(60);
+    public static SuttonCacheController create60SecondsPublicCaching() {
+        final SuttonCacheController cacheControl = new SuttonCacheController();
+        cacheControl.setPrivate(false).setMaxAge(60);
 
         return cacheControl;
     }
@@ -71,12 +68,11 @@ public class CachingUtils {
      * Creates a cache control object, <strong>where the returned data are only allowed to be saved in private
      * caches</strong> and are valid for 30 seconds since they have been sent from the origin server
      *
-     * @return {@link CacheControl}
+     * @return {@link SuttonCacheController}
      */
-    public static CacheControl create30SecondsPrivateCaching() {
-        final CacheControl cacheControl = new CacheControl();
-        cacheControl.setPrivate(true);
-        cacheControl.setMaxAge(30);
+    public static SuttonCacheController create30SecondsPrivateCaching() {
+        final SuttonCacheController cacheControl = new SuttonCacheController();
+        cacheControl.setPrivate(true).setMaxAge(30);
 
         return cacheControl;
     }
@@ -85,12 +81,11 @@ public class CachingUtils {
      * Creates a cache control object, <strong>where the returned data are not allowed to be cached
      * </strong>
      *
-     * @return {@link CacheControl}
+     * @return {@link SuttonCacheController}
      */
-    public static CacheControl createNoCacheNoStoreCaching() {
-        final CacheControl cacheControl = new CacheControl();
-        cacheControl.setNoCache(true);
-        cacheControl.setNoStore(true);
+    public static SuttonCacheController createNoCacheNoStoreCaching() {
+        final SuttonCacheController cacheControl = new SuttonCacheController();
+        cacheControl.setNoCache(true).setNoStore(true);
 
         return cacheControl;
     }

@@ -1,8 +1,11 @@
 package de.fhws.fiw.fds.suttondemo.server.api.states.person_locations;
 
+import de.fhws.fiw.fds.sutton.server.api.caching.CachingUtils;
+import de.fhws.fiw.fds.sutton.server.api.caching.EtagGenerator;
 import de.fhws.fiw.fds.sutton.server.api.states.AbstractState;
 import de.fhws.fiw.fds.sutton.server.api.states.get.AbstractGetRelationState;
 import de.fhws.fiw.fds.sutton.server.database.results.SingleModelResult;
+import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
 import de.fhws.fiw.fds.suttondemo.server.DaoFactory;
 import de.fhws.fiw.fds.suttondemo.server.api.models.Location;
 
@@ -17,6 +20,19 @@ public class GetSingleLocationOfPerson<R> extends AbstractGetRelationState<Locat
     @Override
     protected void authorizeRequest() {
 
+    }
+
+    @Override
+    protected boolean clientKnowsCurrentModelState(AbstractModel modelFromDatabase) {
+        final String modelEtag = EtagGenerator.createEntityTag(modelFromDatabase);
+        return this.suttonRequest.clientKnowsCurrentModel(modelEtag);
+    }
+
+    @Override
+    protected void defineHttpCaching() {
+        final String modelFromDBEtag = EtagGenerator.createEtag(this.requestedModel.getResult());
+        this.suttonResponse.entityTag(modelFromDBEtag);
+        this.suttonResponse.cacheControl(CachingUtils.create30SecondsPublicCaching());
     }
 
     @Override protected SingleModelResult<Location> loadModel( )

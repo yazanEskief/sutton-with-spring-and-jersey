@@ -1,9 +1,12 @@
 package de.fhws.fiw.fds.sutton.server.api.serviceAdapters.responseAdapter;
 
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.cachingAdapter.SuttonCacheController;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 
 public class SpringResponse<T> implements SuttonResponse<ResponseEntity<T>, T> {
 
@@ -13,6 +16,10 @@ public class SpringResponse<T> implements SuttonResponse<ResponseEntity<T>, T> {
 
     private final HttpHeaders headers;
 
+    private CacheControl cacheControl = CacheControl.empty();
+
+    private String eTag;
+
     public SpringResponse() {
         this.body = null;
         this.status = Status.OK;
@@ -21,9 +28,15 @@ public class SpringResponse<T> implements SuttonResponse<ResponseEntity<T>, T> {
 
     @Override
     public ResponseEntity<T> build() {
-        return ResponseEntity.status(this.status.getCode())
+        var result = ResponseEntity.status(this.status.getCode())
                 .headers(this.headers)
-                .body(this.body);
+                .cacheControl(this.cacheControl);
+
+        if(this.eTag != null) {
+            result.eTag(this.eTag);
+        }
+
+        return result.body(this.body);
     }
 
     @Override
@@ -33,8 +46,39 @@ public class SpringResponse<T> implements SuttonResponse<ResponseEntity<T>, T> {
     }
 
     @Override
+    public SpringResponse<T> cacheControl(final SuttonCacheController suttonCacheController) {
+
+        final CacheControl cacheControl = suttonCacheController.isNoStoreFlag() ? CacheControl.noStore() :
+                suttonCacheController.isNoCacheFlag() ? CacheControl.noCache() :
+                        CacheControl.maxAge(suttonCacheController.getMaxAge(), TimeUnit.SECONDS);
+        if(suttonCacheController.isMustRevalidateFlag()) {
+            cacheControl.mustRevalidate();
+        }
+        if(suttonCacheController.isProxyRevalidate()) {
+            cacheControl.proxyRevalidate();
+        }
+        if(suttonCacheController.isNoTransformFlag()) {
+            cacheControl.noTransform();
+        }
+        if(suttonCacheController.isPrivateFlag()) {
+            cacheControl.cachePrivate();
+        } else {
+            cacheControl.cachePublic();
+        }
+
+        this.cacheControl = cacheControl;
+
+        return this;
+    }
+
+    @Override
+    public SpringResponse<T> entityTag(final String entityTag) {
+        this.eTag = entityTag;
+        return this;
+    }
+
+    @Override
     public SpringResponse<T> link(final URI uri, final String rel) {
-        System.out.println("-".repeat(10) + uri.toASCIIString() + "-".repeat(10));
         this.headers.add("Link", linkHeader(uri.toASCIIString(), rel));
         return this;
     }

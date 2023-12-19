@@ -16,9 +16,12 @@
 
 package de.fhws.fiw.fds.suttondemo.server.api.states.persons;
 
+import de.fhws.fiw.fds.sutton.server.api.caching.CachingUtils;
+import de.fhws.fiw.fds.sutton.server.api.caching.EtagGenerator;
 import de.fhws.fiw.fds.sutton.server.api.states.AbstractState;
 import de.fhws.fiw.fds.sutton.server.api.states.get.AbstractGetState;
 import de.fhws.fiw.fds.sutton.server.database.results.SingleModelResult;
+import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
 import de.fhws.fiw.fds.suttondemo.server.DaoFactory;
 import de.fhws.fiw.fds.suttondemo.server.api.models.Person;
 import de.fhws.fiw.fds.suttondemo.server.api.states.person_locations.PersonLocationRelTypes;
@@ -37,6 +40,19 @@ public class GetSinglePerson<R> extends AbstractGetState<Person, R> {
 
     @Override
     protected void authorizeRequest() {
+    }
+
+    @Override
+    protected boolean clientKnowsCurrentModelState(AbstractModel modelFromDatabase) {
+        final String eTagOfModel = EtagGenerator.createEtag(modelFromDatabase);
+        return this.suttonRequest.clientKnowsCurrentModel(eTagOfModel);
+    }
+
+    @Override
+    protected void defineHttpCaching() {
+        final String eTagOfModel = EtagGenerator.createEtag(this.requestedModel.getResult());
+        this.suttonResponse.entityTag(eTagOfModel);
+        this.suttonResponse.cacheControl(CachingUtils.create30SecondsPublicCaching());
     }
 
     @Override

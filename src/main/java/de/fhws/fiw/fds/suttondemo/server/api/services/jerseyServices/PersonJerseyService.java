@@ -14,6 +14,7 @@
 
 package de.fhws.fiw.fds.suttondemo.server.api.services.jerseyServices;
 
+import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.Exceptions.SuttonWebAppException;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.ServletRequestAdapter.JerseyServletRequest;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.requestAdapter.JerseyRequest;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.responseAdapter.JerseyResponse;
@@ -44,70 +45,90 @@ public class PersonJerseyService extends AbstractJerseyService {
             @DefaultValue("0") @QueryParam("offset") int offset,
             @DefaultValue("20") @QueryParam("size") int size,
             @DefaultValue("0") @QueryParam("wait") int waitingTime) {
-        return new GetAllPersons.Builder<Response>()
-                .setQuery(new QueryByFirstAndLastName<>(firstName, lastName, offset, size, waitingTime))
-                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setSuttonRequest(new JerseyRequest(this.request))
-                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setSuttonResponse(new JerseyResponse<>())
-                .build()
-                .execute();
+        try {
+            return new GetAllPersons.Builder<Response>()
+                    .setQuery(new QueryByFirstAndLastName<>(firstName, lastName, offset, size, waitingTime))
+                    .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
+                    .setSuttonRequest(new JerseyRequest(this.request))
+                    .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                    .setSuttonResponse(new JerseyResponse<>())
+                    .build()
+                    .execute();
+        } catch (SuttonWebAppException e) {
+            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+        }
     }
 
     @GET
     @Path("{id: \\d+}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response getSinglePerson(@PathParam("id") final long id) {
-        return new GetSinglePerson.Builder<Response>()
-                .setRequestedId(id)
-                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setSuttonRequest(new JerseyRequest(this.request))
-                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setSuttonResponse(new JerseyResponse<>())
-                .build()
-                .execute();
+        try {
+            return new GetSinglePerson.Builder<Response>()
+                    .setRequestedId(id)
+                    .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
+                    .setSuttonRequest(new JerseyRequest(this.request))
+                    .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                    .setSuttonResponse(new JerseyResponse<>())
+                    .build()
+                    .execute();
+        } catch (SuttonWebAppException e) {
+            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+        }
     }
 
     @POST
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response createSinglePerson(final Person personModel) {
-        return new PostNewPerson.Builder<Response>()
-                .setModelToCreate(personModel)
-                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setSuttonRequest(new JerseyRequest(this.request))
-                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setSuttonResponse(new JerseyResponse<>())
-                .build()
-                .execute();
+        try {
+            return new PostNewPerson.Builder<Response>()
+                    .setModelToCreate(personModel)
+                    .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
+                    .setSuttonRequest(new JerseyRequest(this.request))
+                    .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                    .setSuttonResponse(new JerseyResponse<>())
+                    .build()
+                    .execute();
+        } catch (SuttonWebAppException e) {
+            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+        }
     }
 
     @PUT
     @Path("{id: \\d+}")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response updateSinglePerson(@PathParam("id") final long id, final Person personModel) {
-        return new PutSinglePerson.Builder<Response>()
-                .setRequestedId(id)
-                .setModelToUpdate(personModel)
-                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setSuttonRequest(new JerseyRequest(this.request))
-                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setSuttonResponse(new JerseyResponse<>())
-                .build()
-                .execute();
+        try {
+            return new PutSinglePerson.Builder<Response>()
+                    .setRequestedId(id)
+                    .setModelToUpdate(personModel)
+                    .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
+                    .setSuttonRequest(new JerseyRequest(this.request))
+                    .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                    .setSuttonResponse(new JerseyResponse<>())
+                    .build()
+                    .execute();
+        } catch (SuttonWebAppException e) {
+            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+        }
     }
 
     @DELETE
     @Path("{id: \\d+}")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response deleteSinglePerson(@PathParam("id") final long id) {
-        return new DeleteSinglePerson.Builder<Response>()
-                .setRequestedId(id)
-                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setSuttonRequest(new JerseyRequest(this.request))
-                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setSuttonResponse(new JerseyResponse<>())
-                .build()
-                .execute();
+        try {
+            return new DeleteSinglePerson.Builder<Response>()
+                    .setRequestedId(id)
+                    .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
+                    .setSuttonRequest(new JerseyRequest(this.request))
+                    .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                    .setSuttonResponse(new JerseyResponse<>())
+                    .build()
+                    .execute();
+        } catch (SuttonWebAppException e) {
+            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+        }
     }
 
     @GET
@@ -118,15 +139,19 @@ public class PersonJerseyService extends AbstractJerseyService {
                                          @DefaultValue("0") @QueryParam("offset") int offset,
                                          @DefaultValue("20") @QueryParam("size") int size,
                                          @DefaultValue("0") @QueryParam("wait") int waitingTime) {
-        return new GetAllLocationsOfPerson.Builder<Response>()
-                .setParentId(personId)
-                .setQuery(new QueryByLocationName<>(personId, cityName, offset, size, waitingTime))
-                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setSuttonRequest(new JerseyRequest(this.request))
-                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setSuttonResponse(new JerseyResponse<Collection<Location>>())
-                .build()
-                .execute();
+        try {
+            return new GetAllLocationsOfPerson.Builder<Response>()
+                    .setParentId(personId)
+                    .setQuery(new QueryByLocationName<>(personId, cityName, offset, size, waitingTime))
+                    .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
+                    .setSuttonRequest(new JerseyRequest(this.request))
+                    .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                    .setSuttonResponse(new JerseyResponse<Collection<Location>>())
+                    .build()
+                    .execute();
+        } catch (SuttonWebAppException e) {
+            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+        }
     }
 
     @GET
@@ -134,30 +159,38 @@ public class PersonJerseyService extends AbstractJerseyService {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response getLocationByIdOfPerson(@PathParam("personId") final long personId,
                                             @PathParam("locationId") final long locationId) {
-        return new GetSingleLocationOfPerson.Builder<Response>()
-                .setParentId(personId)
-                .setRequestedId(locationId)
-                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setSuttonRequest(new JerseyRequest(this.request))
-                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setSuttonResponse(new JerseyResponse<Location>())
-                .build()
-                .execute();
+        try {
+            return new GetSingleLocationOfPerson.Builder<Response>()
+                    .setParentId(personId)
+                    .setRequestedId(locationId)
+                    .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
+                    .setSuttonRequest(new JerseyRequest(this.request))
+                    .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                    .setSuttonResponse(new JerseyResponse<Location>())
+                    .build()
+                    .execute();
+        } catch (SuttonWebAppException e) {
+            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+        }
     }
 
     @POST
     @Path("{personId: \\d+}/locations")
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response createNewLocationOfPerson(@PathParam("personId") final long personId, final Location location) {
-        return new PostNewLocationOfPerson.Builder<Response>()
-                .setParentId(personId)
-                .setModelToCreate(location)
-                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setSuttonRequest(new JerseyRequest(this.request))
-                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setSuttonResponse(new JerseyResponse<>())
-                .build()
-                .execute();
+        try {
+            return new PostNewLocationOfPerson.Builder<Response>()
+                    .setParentId(personId)
+                    .setModelToCreate(location)
+                    .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
+                    .setSuttonRequest(new JerseyRequest(this.request))
+                    .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                    .setSuttonResponse(new JerseyResponse<>())
+                    .build()
+                    .execute();
+        } catch (SuttonWebAppException e) {
+            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+        }
     }
 
     @PUT
@@ -165,31 +198,39 @@ public class PersonJerseyService extends AbstractJerseyService {
     @Consumes({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     public Response updateNewLocationOfPerson(@PathParam("personId") final long personId,
                                               @PathParam("locationId") final long locationId, final Location location) {
-        return new PutSingleLocationOfPerson.Builder<Response>()
-                .setParentId(personId)
-                .setRequestedId(locationId)
-                .setModelToUpdate(location)
-                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setSuttonRequest(new JerseyRequest(this.request))
-                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setSuttonResponse(new JerseyResponse<>())
-                .build()
-                .execute();
+        try {
+            return new PutSingleLocationOfPerson.Builder<Response>()
+                    .setParentId(personId)
+                    .setRequestedId(locationId)
+                    .setModelToUpdate(location)
+                    .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
+                    .setSuttonRequest(new JerseyRequest(this.request))
+                    .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                    .setSuttonResponse(new JerseyResponse<>())
+                    .build()
+                    .execute();
+        } catch (SuttonWebAppException e) {
+            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+        }
     }
 
     @DELETE
     @Path("{personId: \\d+}/locations/{locationId: \\d+}")
     public Response deleteLocationOfPerson(@PathParam("personId") final long personId,
                                            @PathParam("locationId") final long locationId) {
-        return new DeleteSingleLocationOfPerson.Builder<Response>()
-                .setParentId(personId)
-                .setRequestedId(locationId)
-                .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
-                .setSuttonRequest(new JerseyRequest(this.request))
-                .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
-                .setSuttonResponse(new JerseyResponse<>())
-                .build()
-                .execute();
+        try {
+            return new DeleteSingleLocationOfPerson.Builder<Response>()
+                    .setParentId(personId)
+                    .setRequestedId(locationId)
+                    .setUriInfo(new JerseyUriInfoAdapter(this.uriInfo))
+                    .setSuttonRequest(new JerseyRequest(this.request))
+                    .setSuttonServletRequest(new JerseyServletRequest(this.httpServletRequest))
+                    .setSuttonResponse(new JerseyResponse<>())
+                    .build()
+                    .execute();
+        } catch (SuttonWebAppException e) {
+            throw new WebApplicationException(e.getExceptionMessage(), e.getStatus().getCode());
+        }
     }
 
 }

@@ -26,7 +26,7 @@ public class LocationController extends AbstractSpringService {
     public ResponseEntity<Collection<Location>> getAllLocations() {
         return new GetAllLocations.Builder<ResponseEntity<Collection<Location>>>()
                 .setQuery(new GetAllLocations.AllLocations<>())
-                .setUriInfo(new SpringUriInfoAdapter(getUtiComponentsBuilder()))
+                .setUriInfo(new SpringUriInfoAdapter(this.httpServletRequest))
                 .setSuttonRequest(new SpringRequest(httpServletRequest))
                 .setSuttonServletRequest(new SpringServletRequest(httpServletRequest))
                 .setSuttonResponse(new SpringResponse<>())
@@ -36,9 +36,10 @@ public class LocationController extends AbstractSpringService {
 
     @GetMapping(value = "/{locationId}", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public ResponseEntity<Location> getSingleLocation(@PathVariable final long locationId) {
+        System.out.println(this.httpServletRequest.getContextPath());
         return new GetSingleLocation.Builder<ResponseEntity<Location>>()
                 .setRequestedId(locationId)
-                .setUriInfo(new SpringUriInfoAdapter(getUtiComponentsBuilder()))
+                .setUriInfo(new SpringUriInfoAdapter(this.httpServletRequest))
                 .setSuttonRequest(new SpringRequest(httpServletRequest))
                 .setSuttonServletRequest(new SpringServletRequest(httpServletRequest))
                 .setSuttonResponse(new SpringResponse<>())
@@ -50,7 +51,7 @@ public class LocationController extends AbstractSpringService {
     public ResponseEntity<Void> createSingleLocation(@RequestBody final Location locationModel) {
         return new PostNewLocation.Builder<ResponseEntity<Void>>()
                 .setModelToCreate(locationModel)
-                .setUriInfo(new SpringUriInfoAdapter(getUtiComponentsBuilder()))
+                .setUriInfo(new SpringUriInfoAdapter(this.httpServletRequest))
                 .setSuttonRequest(new SpringRequest(httpServletRequest))
                 .setSuttonServletRequest(new SpringServletRequest(httpServletRequest))
                 .setSuttonResponse(new SpringResponse<>())
@@ -66,7 +67,7 @@ public class LocationController extends AbstractSpringService {
         return new PutSingleLocation.Builder<ResponseEntity<Void>>()
                 .setRequestedId(locationId)
                 .setModelToUpdate(locationModel)
-                .setUriInfo(new SpringUriInfoAdapter(getUtiComponentsBuilder()))
+                .setUriInfo(new SpringUriInfoAdapter(this.httpServletRequest))
                 .setSuttonRequest(new SpringRequest(httpServletRequest))
                 .setSuttonServletRequest(new SpringServletRequest(httpServletRequest))
                 .setSuttonResponse(new SpringResponse<>())
@@ -78,7 +79,7 @@ public class LocationController extends AbstractSpringService {
     public ResponseEntity<Void> deleteSingleLocation(@PathVariable final long locationId) {
         return new DeleteSingleLocation.Builder<ResponseEntity<Void>>()
                 .setRequestedId(locationId)
-                .setUriInfo(new SpringUriInfoAdapter(getUtiComponentsBuilder()))
+                .setUriInfo(new SpringUriInfoAdapter(this.httpServletRequest))
                 .setSuttonRequest(new SpringRequest(httpServletRequest))
                 .setSuttonServletRequest(new SpringServletRequest(httpServletRequest))
                 .setSuttonResponse(new SpringResponse<>())

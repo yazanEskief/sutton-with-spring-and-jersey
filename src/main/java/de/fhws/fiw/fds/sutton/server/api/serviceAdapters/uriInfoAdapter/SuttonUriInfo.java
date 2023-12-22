@@ -14,6 +14,12 @@ public interface SuttonUriInfo {
 
     URI appendIdToPath(final long id);
 
+    String getBaseUri();
+
+    String appendToBaseUri(final String uri);
+
+    String appendToBaseUriWithoutSchemePortHost(final String uri);
+
     default String getQueryParamAsTemplate(final String queryParam) {
         return "{" + queryParam + "}";
     }

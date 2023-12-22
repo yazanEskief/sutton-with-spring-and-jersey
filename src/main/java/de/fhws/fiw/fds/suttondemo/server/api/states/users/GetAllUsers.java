@@ -23,11 +23,6 @@ public class GetAllUsers<R> extends AbstractGetCollectionState<User, R> {
     }
 
     @Override
-    protected void defineHttpResponseBody() {
-        this.suttonResponse.entity(this.result.getResult());
-    }
-
-    @Override
     protected void defineTransitionLinks() {
         addLink(UserUri.REL_PATH, UserRelTypes.CREATE_USER, getAcceptRequestHeader());
     }

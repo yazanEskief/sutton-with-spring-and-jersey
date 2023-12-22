@@ -26,11 +26,6 @@ public class GetAllLocationsOfPerson<R> extends AbstractGetCollectionRelationSta
     }
 
     @Override
-    protected void defineHttpResponseBody() {
-        this.suttonResponse.entity(this.result.getResult());
-    }
-
-    @Override
     protected void defineTransitionLinks() {
         addLink(PersonLocationUri.REL_PATH,
                 PersonLocationRelTypes.CREATE_LOCATION,

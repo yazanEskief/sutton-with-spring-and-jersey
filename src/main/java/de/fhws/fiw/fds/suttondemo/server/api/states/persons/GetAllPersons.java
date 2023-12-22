@@ -30,10 +30,6 @@ public class GetAllPersons<R> extends AbstractGetCollectionState<Person, R> {
         super(builder);
     }
 
-    protected void defineHttpResponseBody() {
-        this.suttonResponse.entity(this.result.getResult());
-    }
-
     @Override
     protected void authorizeRequest() {
         QueryByFirstAndLastName<R> theQuery = (QueryByFirstAndLastName<R>) this.query;

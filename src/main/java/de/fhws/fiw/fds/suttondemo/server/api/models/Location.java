@@ -1,20 +1,14 @@
 package de.fhws.fiw.fds.suttondemo.server.api.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import de.fhws.fiw.fds.sutton.server.api.converter.JsonLinkConverter;
+import de.fhws.fiw.fds.sutton.server.api.hyperlinks.*;
 import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
-import jakarta.ws.rs.core.Link;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import org.glassfish.jersey.linking.InjectLink;
-
 
 import java.time.LocalDate;
 
 @JsonRootName("location")
-@JsonIgnoreProperties(value = {"selfLinkOnSecond", "selfLinkPrimary"}, allowGetters = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlRootElement
 public class Location extends AbstractModel {
@@ -27,25 +21,23 @@ public class Location extends AbstractModel {
 
     private LocalDate visitedOn;
 
-    @InjectLink(
-            style = InjectLink.Style.ABSOLUTE,
-            value = "/persons/${instance.primaryId}/locations/${instance.id}",
+    @SuttonLink(
+            style = SuttonLink.Style.ABSOLUTE,
+            value = "/persons/${primaryId}/locations/${id}",
             rel = "self",
-            title = "self",
-            type = "application/json",
-            condition = "${instance.primaryId != 0}"
+            type = SuttonLink.MediaType.APPLICATION_JSON,
+            condition = @Condition(field = "primaryId", operation = Condition.Operation.NOT_EQUAL, value = "0")
     )
-    private Link selfLinkOnSecond;
+    private transient Link selfLinkOnSecond;
 
-    @InjectLink(
-            style = InjectLink.Style.ABSOLUTE,
-            value = "/locations/${instance.id}",
+    @SuttonLink(
+            style = SuttonLink.Style.ABSOLUTE,
+            value = "/locations/${id}",
             rel = "self",
-            title = "self",
-            type = "application/json",
-            condition = "${instance.primaryId == 0}"
+            type = SuttonLink.MediaType.APPLICATION_JSON,
+            condition = @Condition(field = "primaryId", operation = Condition.Operation.EQUAL, value = "0")
     )
-    private Link selfLinkPrimary;
+    private transient Link selfLinkPrimary;
 
     public Location() {
         // make JPA happy
@@ -58,7 +50,6 @@ public class Location extends AbstractModel {
         this.visitedOn = visitedOn;
     }
 
-    @JsonSerialize(using = JsonLinkConverter.class)
     public Link getSelfLinkOnSecond() {
         return selfLinkOnSecond;
     }
@@ -67,7 +58,6 @@ public class Location extends AbstractModel {
         this.selfLinkOnSecond = selfLinkOnSecond;
     }
 
-    @JsonSerialize(using = JsonLinkConverter.class)
     public Link getSelfLinkPrimary() {
         return selfLinkPrimary;
     }
@@ -107,5 +97,4 @@ public class Location extends AbstractModel {
     public void setVisitedOn(final LocalDate visitedOn) {
         this.visitedOn = visitedOn;
     }
-
 }

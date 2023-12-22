@@ -16,6 +16,7 @@
 
 package de.fhws.fiw.fds.sutton.server.api.states.get;
 
+import de.fhws.fiw.fds.sutton.server.api.hyperlinks.SuttonLinkProcessor;
 import de.fhws.fiw.fds.sutton.server.api.queries.AbstractQuery;
 import de.fhws.fiw.fds.sutton.server.api.queries.PagingContext;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.responseAdapter.Status;
@@ -116,7 +117,13 @@ public abstract class AbstractGetCollectionState<T extends AbstractModel, R> ext
     /**
      * Extending classes should use this method to set the body of the response.
      */
-    protected abstract void defineHttpResponseBody();
+    protected void defineHttpResponseBody() {
+        SuttonLinkProcessor suttonLinkProcessor = new SuttonLinkProcessor(this.uriInfo);
+
+        Collection<T> entityCollection = this.result.getResult();
+        entityCollection.forEach(suttonLinkProcessor::processEntity);
+        this.suttonResponse.entity(entityCollection);
+    }
 
     protected void defineHttpHeaderNumberOfResults() {
         this.suttonResponse.header(getHeaderForNumberOfResults(), this.result.getResult().size());

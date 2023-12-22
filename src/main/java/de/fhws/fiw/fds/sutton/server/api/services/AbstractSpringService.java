@@ -10,11 +10,4 @@ public abstract class AbstractSpringService {
     protected AbstractSpringService(HttpServletRequest httpServletRequest) {
         this.httpServletRequest = httpServletRequest;
     }
-
-    protected UriComponentsBuilder getUtiComponentsBuilder() {
-        final String requestUri = this.httpServletRequest.getRequestURL().append("?")
-                .append(this.httpServletRequest.getQueryString()).toString();
-
-        return UriComponentsBuilder.fromUriString(requestUri);
-    }
 }

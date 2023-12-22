@@ -16,6 +16,7 @@
 
 package de.fhws.fiw.fds.sutton.server.api.states.get;
 
+import de.fhws.fiw.fds.sutton.server.api.caching.CachingUtils;
 import de.fhws.fiw.fds.sutton.server.api.hyperlinks.Hyperlinks;
 import de.fhws.fiw.fds.sutton.server.api.states.AbstractState;
 
@@ -48,8 +49,7 @@ public abstract class AbstractGetDispatcherState<R> extends AbstractState<R, Voi
 
         defineTransitionLinks();
 
-//        TODO: implement SuttonCacheControl
-//        this.suttonResponseBuilder.cacheControl(CachingUtils.create60SecondsPublicCaching());
+        this.suttonResponse.cacheControl(CachingUtils.create60SecondsPublicCaching());
 
         return this.suttonResponse.build();
     }

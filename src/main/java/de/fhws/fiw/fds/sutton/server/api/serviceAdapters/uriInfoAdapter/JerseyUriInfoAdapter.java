@@ -49,4 +49,26 @@ public class JerseyUriInfoAdapter implements SuttonUriInfo {
         UriBuilder builder = uriInfo.getAbsolutePathBuilder();
         return builder.path(Long.toString(id)).build();
     }
+
+    @Override
+    public String getBaseUri() {
+        return this.uriInfo.getBaseUri().toASCIIString();
+    }
+
+    @Override
+    public String appendToBaseUri(String uri) {
+        UriBuilder builder = this.uriInfo.getBaseUriBuilder();
+        builder.path(beforeQuestionMark(uri));
+        builder.replaceQuery(afterQuestionMark(uri));
+        return builder.toTemplate();
+    }
+
+    @Override
+    public String appendToBaseUriWithoutSchemePortHost(String uri) {
+        return UriBuilder.newInstance()
+                .path(this.uriInfo.getBaseUri().getPath())
+                .path(beforeQuestionMark(uri))
+                .replaceQuery(afterQuestionMark(uri))
+                .toTemplate();
+    }
 }

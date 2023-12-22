@@ -14,20 +14,15 @@
 
 package de.fhws.fiw.fds.suttondemo.server.api.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonRootName;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import de.fhws.fiw.fds.sutton.server.api.converter.JsonLinkConverter;
+import de.fhws.fiw.fds.sutton.server.api.hyperlinks.*;
 import de.fhws.fiw.fds.sutton.server.models.AbstractModel;
-import jakarta.ws.rs.core.Link;
 import jakarta.xml.bind.annotation.XmlRootElement;
-import org.glassfish.jersey.linking.InjectLink;
 
 import java.time.LocalDate;
 
 @JsonRootName("person")
-@JsonIgnoreProperties(value = {"selfLink", "location"}, allowGetters = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @XmlRootElement
 public class Person extends AbstractModel {
@@ -38,22 +33,21 @@ public class Person extends AbstractModel {
     private LocalDate birthDate;
     private String emailAddress;
 
-    @InjectLink(
-            title = "self",
-            value = "/persons/${instance.id}",
+    @SuttonLink(
+            style = SuttonLink.Style.ABSOLUTE,
+            value = "persons/${id}",
             rel = "self",
-            style = InjectLink.Style.ABSOLUTE,
-            type = "application/json")
-    private Link selfLink;
-
-    @InjectLink(
-            style = InjectLink.Style.ABSOLUTE,
-            value = "persons/${instance.id}/locations",
-            rel = "getLocationsOfPerson",
-            title = "location",
-            type = "application/json"
+            type = SuttonLink.MediaType.APPLICATION_JSON
     )
-    private Link location;
+    private transient Link selfLink;
+
+    @SuttonLink(
+            style = SuttonLink.Style.ABSOLUTE,
+            value = "persons/${id}/locations",
+            rel = "getLocationsOfPerson",
+            type = SuttonLink.MediaType.APPLICATION_JSON
+    )
+    private transient Link location;
 
     public Person() {
         // make JPA happy
@@ -67,7 +61,6 @@ public class Person extends AbstractModel {
         this.emailAddress = emailAddress;
     }
 
-    @JsonSerialize(using = JsonLinkConverter.class)
     public Link getSelfLink() {
         return selfLink;
     }
@@ -75,7 +68,6 @@ public class Person extends AbstractModel {
         this.selfLink = selfLink;
     }
 
-    @JsonSerialize(using = JsonLinkConverter.class)
     public Link getLocation() {
         return location;
     }

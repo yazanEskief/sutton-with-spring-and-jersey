@@ -28,7 +28,7 @@ public class UserSpringService extends AbstractSpringService {
                 .setQuery(new GetAllUsers.AllUsers<>())
                 .setSuttonRequest(new SpringRequest(this.httpServletRequest))
                 .setSuttonResponse(new SpringResponse<>())
-                .setUriInfo(new SpringUriInfoAdapter(getUtiComponentsBuilder()))
+                .setUriInfo(new SpringUriInfoAdapter(this.httpServletRequest))
                 .setSuttonServletRequest(new SpringServletRequest(this.httpServletRequest))
                 .build()
                 .execute();
@@ -40,7 +40,7 @@ public class UserSpringService extends AbstractSpringService {
                 .setRequestedId(userId)
                 .setSuttonRequest(new SpringRequest(this.httpServletRequest))
                 .setSuttonResponse(new SpringResponse<>())
-                .setUriInfo(new SpringUriInfoAdapter(getUtiComponentsBuilder()))
+                .setUriInfo(new SpringUriInfoAdapter(this.httpServletRequest))
                 .setSuttonServletRequest(new SpringServletRequest(this.httpServletRequest))
                 .build()
                 .execute();
@@ -52,7 +52,7 @@ public class UserSpringService extends AbstractSpringService {
                 .setModelToCreate(newUser)
                 .setSuttonRequest(new SpringRequest(this.httpServletRequest))
                 .setSuttonResponse(new SpringResponse<>())
-                .setUriInfo(new SpringUriInfoAdapter(getUtiComponentsBuilder()))
+                .setUriInfo(new SpringUriInfoAdapter(this.httpServletRequest))
                 .setSuttonServletRequest(new SpringServletRequest(this.httpServletRequest))
                 .build()
                 .execute();
@@ -65,7 +65,7 @@ public class UserSpringService extends AbstractSpringService {
                 .setModelToUpdate(updatedUser)
                 .setSuttonRequest(new SpringRequest(this.httpServletRequest))
                 .setSuttonResponse(new SpringResponse<>())
-                .setUriInfo(new SpringUriInfoAdapter(getUtiComponentsBuilder()))
+                .setUriInfo(new SpringUriInfoAdapter(this.httpServletRequest))
                 .setSuttonServletRequest(new SpringServletRequest(this.httpServletRequest))
                 .build()
                 .execute();
@@ -77,7 +77,7 @@ public class UserSpringService extends AbstractSpringService {
                 .setRequestedId(userId)
                 .setSuttonRequest(new SpringRequest(this.httpServletRequest))
                 .setSuttonResponse(new SpringResponse<>())
-                .setUriInfo(new SpringUriInfoAdapter(getUtiComponentsBuilder()))
+                .setUriInfo(new SpringUriInfoAdapter(this.httpServletRequest))
                 .setSuttonServletRequest(new SpringServletRequest(this.httpServletRequest))
                 .build()
                 .execute();

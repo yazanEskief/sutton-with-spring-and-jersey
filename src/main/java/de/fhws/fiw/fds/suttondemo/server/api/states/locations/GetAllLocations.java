@@ -21,10 +21,6 @@ public class GetAllLocations<R> extends AbstractGetCollectionState<Location, R> 
 
     }
 
-    protected void defineHttpResponseBody() {
-        this.suttonResponse.entity(this.result.getResult());
-    }
-
     @Override
     protected void defineTransitionLinks() {
         addLink(LocationUri.REL_PATH, LocationRelTypes.CREATE_LOCATION, getAcceptRequestHeader());

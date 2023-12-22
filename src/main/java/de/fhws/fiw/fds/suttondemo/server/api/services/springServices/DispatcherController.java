@@ -26,7 +26,7 @@ public class DispatcherController extends AbstractSpringService {
     @GetMapping(value = "", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> getDispatcher() {
         return new GetDispatcher.Builder<ResponseEntity<Void>>()
-                .setUriInfo(new SpringUriInfoAdapter(getUtiComponentsBuilder()))
+                .setUriInfo(new SpringUriInfoAdapter(this.httpServletRequest))
                 .setSuttonResponse(new SpringResponse<>())
                 .setSuttonRequest(new SpringRequest(httpServletRequest))
                 .setSuttonServletRequest(new SpringServletRequest(httpServletRequest))

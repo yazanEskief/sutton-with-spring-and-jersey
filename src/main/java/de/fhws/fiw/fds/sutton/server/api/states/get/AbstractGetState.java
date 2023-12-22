@@ -17,6 +17,7 @@
 package de.fhws.fiw.fds.sutton.server.api.states.get;
 
 import de.fhws.fiw.fds.sutton.server.api.hyperlinks.Hyperlinks;
+import de.fhws.fiw.fds.sutton.server.api.hyperlinks.SuttonLinkProcessor;
 import de.fhws.fiw.fds.sutton.server.api.serviceAdapters.responseAdapter.Status;
 import de.fhws.fiw.fds.sutton.server.api.states.AbstractState;
 import de.fhws.fiw.fds.sutton.server.database.results.SingleModelResult;
@@ -104,6 +105,9 @@ public abstract class AbstractGetState<T extends AbstractModel, R> extends Abstr
     }
 
     protected void defineHttpResponseBody() {
+        SuttonLinkProcessor suttonLinkProcessor = new SuttonLinkProcessor(this.uriInfo);
+
+        suttonLinkProcessor.processEntity(this.requestedModel.getResult());
         this.suttonResponse.entity(this.requestedModel.getResult());
     }
 
